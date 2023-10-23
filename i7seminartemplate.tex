@@ -84,252 +84,72 @@
 
 \begin{document}
 
-%TODO Insert topic of seminar, e.g. Theoretical Topics in Data Science or Complexity Theory
-\subtitle{Seminar ``[Topic of Seminar]''}
+%%TODO Insert topic of seminar, e.g. Theoretical Topics in Data Science or Complexity Theory
+\subtitle{Seminar ``Theoretical Topics in Data Science''}
 \date{\today}
 \publishers{RWTH Aachen University}	% Do not edit this line.
 
-%TODO Change this to your report title.
-\title{[Title of Your Seminar Report]}
+%%TODO Change this to your report title.
+\title{Latent Semantic Indexing: A Probabilistic Analysis}
 
-%TODO Change this to your name.
-\author{[Your name]}
+%%TODO Change this to your name.
+\author{Vahe Eminyan}
 
 \maketitle
 
 
-%TODO Provide a short abstract for your report.
+%%TODO Provide a short abstract for your report.
 \begin{abstract}
-	\lipsum[1-2]
+Latent semantic indexing (LSI) is one of the techniques used for information retrieval.
+LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.
+
+LSI is widely used in practice and has shown strong empirical results. However, due to the large size of term-document matrices, the computation can be slow. 
+To expedite computations, the paper suggests initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
+The paper proves that the matrix obtained via random projection followed by LSI recovers almost as
+much as the matrix obtained by direct LSI, with high probability.
+
+
+
 \end{abstract}
 
 \thispagestyle{empty}
 
 \clearpage
 
-%TODO The content of your report goes below.
+%%TODO The content of your report goes below.
 
-\section{General Information}
-Your report should be written using this template and be of \textbf{6 
-pages, excluding title page and bibliography}. Replace the title and the author 
-command above with the title of your report and your name. Please 
-\textbf{rename your file}, so that it includes your last name and (a fragment
-of) the title of your report.
-
-Please note the following general guidelines.
+\section{Introduction}
+In this section, we will introduce the topic and explain how the paper is structured.
+My plan is to cover the sections 1,2,5,6 of the paper.
 \begin{itemize}
-	\item \textbf{Do} use sections to structure your report.
-	\item \textbf{Do} use \verb|amsthm| blocks for definitions, theorems and so
-		on (see \cref{s:math}).
-	\item \textbf{Do} emphasize important notions with \verb|\emph{...}| on 
-		their first appearrance.
-	\item \textbf{Do not} use a table of contents (\verb|\tableofcontents|).
-	\item \textbf{Do not} tamper with the page geometry or the font size to stay
-		within the page limit. Also do not use unnecessary vertical spacing 
-		commands for this purpose.
+    \item In sec2: What is LSI and why to use it
+    \item In sec3: The computation with large matrices takes too long. We need random projections to speed up the process.
+    \item In sec3: prove that the matrix obtained via random projection followed by LSI recovers almost as
+much as the matrix obtained by direct LSI, with high probability.
+    \item In sec3: Conclusion and short summary
 \end{itemize}
 
-All packages loaded by the template are part of \TeX{} Live.
+    
+
+\section{LSI Background}
+It is important to understand the meaning of LSI, how it works, and its mathematical background (SVD).
+
+\section{LSI by Random Projection}
+In order to reduce the computational time we use dimensionality reduction and then apply LSI. We prove theorem 5 of the paper which maintains that the matrix obtained via random projection followed by LSI recovers almost as
+much as the matrix obtained by direct LSI, with high probability.
+
+\section{Conclusion and Summary}
+In this section, we will draw conclusions based on the findings presented in the seminar paper and give a brief summary of the paper.
 
 
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Math}\label{s:math}
-Enclose text in math using \verb|\text{...}|. Make sure that the horizontal
-space to the surrounding math is right:
-\begin{itemize}
-	\item \verb|$\{ x \in \mathbb{N} \colon x \text{is even}\}$| yields
-		$\{ x \in \mathbb{N} \colon x \text{is even}\}$.
-	\item \verb|$\{ x \in \mathbb{N} \colon x \text{ is even}\}$| yields
-		$\{ x \in \mathbb{N} \colon x \text{ is even}\}$.
-\end{itemize}
-Function and operator names that are words or abbreviations (such as $\max$ and
-$\log$) should be written with \verb|\operatorname{foo}|:
-\begin{itemize}
-	\item \verb|$foo(x)$| yields $foo(x)$.
-	\item \verb|$\operatorname{foo}(x)$| yields 
-		$\operatorname{foo}(x)$.
-\end{itemize}
-You can define operators with
-\verb|\DeclareMathOperator{\foo}{foo}| from the \verb|mathtools|
-package for easy reusability. This defines a math mode command
-\verb|\foo| that is typeset like an operator name. Note that common
-operator names such as $\log$, $\sin$, $\cos$, $\exp$, $\min$ and $\max$ are
-predefined as \verb|\log|, \verb|\sin| and so on.\par
-
-Sentences also end with a period if they end in a math environment. For inline
-math, the period goes outside as in \verb|$f(x) = 2x+1$.|, for displaymath, the 
-period stays inside as in \verb|\[f(x) = 2x+1.\]|. The \verb|cases| environment
-also need correct punctuation:
-\[
-	D \colon \mathbb{R} \to \{0, 1\} \colon x \mapsto
-	\begin{cases}
-		1	& \text{if }x \in \mathbb{Q}\text,\\
-		0	& \text{otherwise.}
-	\end{cases}
-\]
-
-Important definitions should be put in a definition block like this.
-\begin{verbatim}
-	\begin{definition}
-		A function $f \colon A \to B$ is called \emph{injective} if $x \neq y$
-		implies $f(x) \neq f(y)$.
-	\end{definition}
-\end{verbatim}
-This renders as follows.
-\begin{definition}
-	A function $f \colon A \to B$ is called \emph{injective} if $x \neq y$
-	implies $f(x) \neq f(y)$.
-\end{definition}
-Similar environments are \verb|theorem|, \verb|lemma| and \verb|corollary|.
-\begin{theorem}
-	If $A$ and $B$ are sets and $f \colon A \to B$ an injective function, then
-	$\lvert A \rvert \leq \lvert B \rvert$.
-\end{theorem}
-
-You can give a special name to these blocks by putting it in square brackets. 
-For example, \verb|\begin{theorem}[K\H{o}nigs Lemma]| results in the following.
-
-\begin{theorem}[K\H{o}nigs Lemma]
-	\label{thm:konigs-lemma}
-	Every infinite, finite-branching tree contains an infinite path.
-\end{theorem}
-
-Put the proofs in \verb|proof| environments:
-\begin{verbatim}
-	\begin{proof}
-		Left as an exercise to the reader.
-	\end{proof}
-\end{verbatim}
-
-This renders as follows.
-\begin{proof}
-	Left as an exercise to the reader.
-\end{proof}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Color}
-The template has the \verb|xcolor| package loaded and additionally defines the
-color scheme of RWTH Aachen University. The documentation of \verb|xcolor|,
-including the list of color names can be found on
-\href{https://ctan.org/pkg/xcolor}{CTAN}, The naming convention for RWTH colors
-is \verb|rwth-blue,rwth-orange,...| and for lighter variants \verb|rwth-lblue|
-and \verb|rwth-llblue| and similar for the other colors.
 
 
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Figures and Tables}
-Figures can be created using Ti\textit{k}Z. You can find examples on 
-\href{https://www.texample.net/tikz}{\TeX{}ample.net}.\par
-\begin{figure}[H]
-	\begin{center}
-	\begin{tikzpicture}[every node/.style={draw,circle}]
-		\node (A) at (0,0) {A};
-		\node[right=of A] (B) {B};
-		% \node (B) at (2,0) {B};
-		\draw[->] (A) to (B);
-		\draw[out=30,in=150,-{Stealth[length=0.8em]}] (A) to (B);
-	\end{tikzpicture}
-	\end{center}
-
-\end{figure}
-
-It is preferred that you abstain from using including raster graphics in your
-report, like scans of drawings or images copied from your sources. 
-Vector graphics created outside of \LaTeX are also accepted (but try to use 
-similar fonts and fontsizes in there). 
-
-You can create nice looking tables with the included \verb|booktabs|-package:
-
-\begin{figure}[H]
-	\centering
-	\begin{tabular}{ c l l }
-		\toprule
-		\textbf{Symbol}	& \textbf{Name}				& \textbf{Value}\\
-		\midrule
-		$\pi$ 				& (Archimedes' constant)	& $3.1415926535\dots$\\
-		$e$					& Euler's number				& $2.7182818284\dots$\\
-		$\Phi$				& Golden ratio					& $1.6180339887\dots$\\
-		\bottomrule
-	\end{tabular}
-	\caption{An example table.}
-\end{figure}
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Typographic Recommendations}
-\begin{itemize}
-	\item Use \verb|$\ell$| (rendering as $\ell$) instead of \verb|$l$| 
-		(rendering as $l$).
-	\item This template uses \verb|\varphi| and \verb|\varepsilon| for $\phi$
-		and $\epsilon$ instead of the default symbols as they look nicer.
-		You may also redefine $\theta$ to \verb|\vartheta| ($\vartheta$).
-	\item Instead of $\times$ (\verb|\times|) or $*$ (\verb|*|), use $\cdot$
-		(\verb|\cdot|) for multiplication.
-\end{itemize}
-You can find useful information on English usage and on typography for your 
-paper in \cite{Higham1998}. You can find common phrases in \cite{Trzeciak2005}.
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Cross-References and Citations}\label{sec:ref}
-Sources should be cited using \textsc{Bib}\TeX{}. \textsc{Bib}\TeX{}
-automatically lists the cited sources at the end of the document. Note that
-you need to compile the document as follows when using \textsc{Bib}\TeX{}:
-\begin{center}
-	pdflatex $\to$ bibtex $\to$ pdflatex $\to$ pdflatex.
-\end{center}
-Make sure that author names are spelled properly with all diacritcs, cf.\@ \cref{thm:konigs-lemma}. 
-If possible, include digital object identifiers (DOIs) in your \textsc{Bib}\TeX{} entries.
-The \href{https://dblp.uni-trier.de/}{dblp computer science bibliography}
-is a good source for \textsc{Bib}\TeX{} entries.
-
-For references within the report, you can set jump marks using 
-\verb|\label{foo}|. They can be references with \verb|\ref{foo}|. This template
-loads the \verb|cleveref| package, so you can also reference with 
-\verb|\cref{foo}|:
-\begin{itemize}
-	\item \verb|Section~\ref{sec:ref}| yields: Section~\ref{sec:ref}.
-	\item \verb|\cref{sec:ref}| yields: \cref{sec:ref}.
-\end{itemize}
-
-
-\section{Numbering and Referencing Equations}
-
-Equations inserted via \verb|\[ ... \]| are not numbered:
-\[
-\sum_{i=1}^n i = \frac{n(n+1)}{2}
-\]
-If you want to refer to equations anywhere else in your report, use for example
-the \verb|equation| environment and labels (\verb|\label{eq:geometric}|), cf.\@ \cref{sec:ref}.
-This yields a numbered equation and allows references pointing to it:
-\begin{equation} \label{eq:geometric}
-\sum_{i=0}^n q^i = \frac{1 - q^{n+1}}{1-q} 
-\end{equation}
-You can then refer to your equation using \verb|\cref{eq:geometric}|: \cref{eq:geometric}.
-
-When writing several equations, for example for a longer computation, the \verb|align|
-environment is often useful. By default, all lines in an \verb|align| environment are
-numbered. It is unlikely that you need to refer to all lines of such a computation later.
-Here the \verb|\nonumber| command comes in handy. It inhibits the number of the line it is
-place in. If you do not any of the equations numbered, use the \verb|align*| environment
-instead.
-\begin{align}
-\int x \sin x dx 
-&= - x \cos x + \int \cos x dx \nonumber \\
-&= - x \cos x + \sin x.
-\end{align}
 
 
 \clearpage
