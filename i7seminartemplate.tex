@@ -100,13 +100,19 @@
 
 %%TODO Provide a short abstract for your report.
 \begin{abstract}
+This seminar paper gives an analysis of the scientific paper "Latent Semantic Indexing: A Probabilistic Analysis" by Papadimitriou et al.\\
 Latent semantic indexing (LSI) is one of the techniques used for information retrieval.
-LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.
-
-LSI is widely used in practice and has shown strong empirical results. However, due to the large size of term-document matrices, the computation can be slow. 
-To expedite computations, the paper suggests initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
-The paper proves that the matrix obtained via random projection followed by LSI recovers almost as
+LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.\\
+LSI is widely used in practice and has shown strong empirical results. However, due to the large size of term-document matrices, the computation can be slow.
+These lead to two interesting questions: How can we speed up computations, and why does LSI perform so well?\\
+Papadimitriou et al. address both of these questions.
+To expedite computations, they suggest initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
+They prove that the matrix obtained via random projection followed by LSI recovers almost as
 much as the matrix obtained by direct LSI, with high probability.
+Additionally, they provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.\\
+In this seminar paper, we mainly focus on the first question, providing a detailed analysis of LSI by random projection.
+
+
 
 
 
@@ -118,27 +124,26 @@ much as the matrix obtained by direct LSI, with high probability.
 
 %%TODO The content of your report goes below.
 
-\section{Introduction}
+\section{Introduction} %KES Ej
 In this section, we will introduce the topic and explain how the paper is structured.
-My plan is to cover the sections 1,2,5,6 of the paper.
-\begin{itemize}
-    \item In sec2: What is LSI and why to use it
-    \item In sec3: The computation with large matrices takes too long. We need random projections to speed up the process.
-    \item In sec3: prove that the matrix obtained via random projection followed by LSI recovers almost as
-much as the matrix obtained by direct LSI, with high probability.
-    \item In sec3: Conclusion and short summary
-\end{itemize}
+My plan is to cover all sections focusing on section 5.
+ 
 
-    
+\section{LSI Background} %MI EJ
+In this part we will explain the technique LSI, how it works, and its mathematical background (SVD).
 
-\section{LSI Background}
-It is important to understand the meaning of LSI, how it works, and its mathematical background (SVD).
+\section{Probabilistic Corpus Model} %Kes Ej: Since corpus is used for the explanation of both aspects it is more a theoretical framework.
+In this section, we will introduce the Probabilistic Corpus Model.
 
-\section{LSI by Random Projection}
+\section{LSI by Random Projection} %Ereq EJ
 In order to reduce the computational time we use dimensionality reduction and then apply LSI. We prove theorem 5 of the paper which maintains that the matrix obtained via random projection followed by LSI recovers almost as
 much as the matrix obtained by direct LSI, with high probability.
 
-\section{Conclusion and Summary}
+\section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
+In this part, I will provide the most significant information of paragraph 4 from the original paper. \\
+Main idea: Under certain conditions and assumptions, it can be shown why LSI performes well.
+
+\section{Conclusion and Summary} %Kes EJic 
 In this section, we will draw conclusions based on the findings presented in the seminar paper and give a brief summary of the paper.
 
 
