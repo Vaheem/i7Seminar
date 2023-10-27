@@ -104,13 +104,13 @@ This seminar paper gives an analysis of the scientific paper "Latent Semantic In
 Latent semantic indexing (LSI) is one of the techniques used for information retrieval.
 LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.\\
 LSI is widely used in practice and has shown strong empirical results. However, due to the large size of term-document matrices, the computation can be slow.
-These lead to two interesting questions: How can we speed up computations, and why does LSI perform so well?\\
+These lead to two interesting questions: why does LSI perform so well, and how can we speed up computations?
 Papadimitriou et al. address both of these questions.
-To expedite computations, they suggest initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
+They provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.\\
+Additionally, to expedite computations, they suggest initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
 They prove that the matrix obtained via random projection followed by LSI recovers almost as
-much as the matrix obtained by direct LSI, with high probability.
-Additionally, they provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.\\
-In this seminar paper, we mainly focus on the first question, providing a detailed analysis of LSI by random projection.
+much as the matrix obtained by direct LSI, with high probability.\\
+In this seminar paper, we will consider all relevant information, providing a detailed analysis of LSI by random projection.
 
 
 
@@ -127,6 +127,8 @@ In this seminar paper, we mainly focus on the first question, providing a detail
 \section{Introduction} %KES Ej
 In this section, we will introduce the topic and explain how the paper is structured.
 My plan is to cover all sections focusing on section 5.
+
+
  
 
 \section{LSI Background} %MI EJ
@@ -135,13 +137,15 @@ In this part we will explain the technique LSI, how it works, and its mathematic
 \section{Probabilistic Corpus Model} %Kes Ej: Since corpus is used for the explanation of both aspects it is more a theoretical framework.
 In this section, we will introduce the Probabilistic Corpus Model.
 
+\section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
+In this part, I will provide the most significant information of paragraph 4 of the original paper. \\
+Main idea: Under certain conditions and assumptions, it can be shown why LSI performs well.
+
 \section{LSI by Random Projection} %Ereq EJ
 In order to reduce the computational time we use dimensionality reduction and then apply LSI. We prove theorem 5 of the paper which maintains that the matrix obtained via random projection followed by LSI recovers almost as
 much as the matrix obtained by direct LSI, with high probability.
 
-\section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
-In this part, I will provide the most significant information of paragraph 4 from the original paper. \\
-Main idea: Under certain conditions and assumptions, it can be shown why LSI performes well.
+
 
 \section{Conclusion and Summary} %Kes EJic 
 In this section, we will draw conclusions based on the findings presented in the seminar paper and give a brief summary of the paper.
