@@ -75,7 +75,7 @@
 
 % Misc packages
 \usepackage{lipsum}
-
+\usepackage{mathrsfs}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,9 +155,14 @@ LSI keeps only $k$-largest singular values of the matrix considering only the fi
 A_k = U_kD_kV_k^T
 \]
 which is an approximation of the original matrix $A$. 
+In order to find the most similar documents for the submitted query we map the query to the $k$-dimensional space by using the matrix $U_k$. Afterward, we compare the $k$-dimensional projection with $k$-dimensional representations of the documents in the corpus. For this comparison, we can use cosine similarity. Thus we only need to store the three matrices $U_k$, $D_k$, and $V_k$.
+At this point, we can see the saving of the storage. In order to save the matrix $A$ entirely we need to memorize $n \cdot m$ entries. In contrast to that, we need only $n \cdot k + k\cdot k + m \cdot k$ entries, which is much smaller than  $n \cdot m$, because $k$ is much smaller than both $n$ and $m$.\\
+The approximation $A_k$ of rank $k$ is the matrix that minimizes the Frobenius norm of the  of $A - A_k$. Formally:
+\begin{theorem}
+	[ZITATTT]Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$.
+\end{theorem}
+I.e. this approximation preserves all relative distances, now we only need to say why it finds queries and documents that are semantically related.
 
-
-At this point, we can see the saving of the storage. In order to save the matrix $A$ entirely we need to memorize $n \cdot m$ entries. In contrast to that, we need only $n \cdot k + k\cdot k + m \cdot k$ entries, which is much smaller than  $n \cdot m$, because $k$ is much smaller than both $n$ and $m$
 
 
 
@@ -168,7 +173,24 @@ At this point, we can see the saving of the storage. In order to save the matrix
  
 
 \section{Probabilistic Corpus Model} %Kes Ej: Since corpus is used for the explanation of both aspects it is more a theoretical framework.
-In this section, we will introduce the Probabilistic Corpus Model.
+In this section, we introduce the probabilistic corpus model. We want to analyze a corpus (a term-document matrix) by capturing its probabilistic properties. Therefore, a formal corpus model is introduced in this section. In the rest of the paper, we assume that the corpus is generated from a corpus model.
+
+\begin{definition}
+The universe $U$ is the set of all terms.
+\end{definition}
+\begin{definition}
+A topic is a probability distribution on $U$.
+\end{definition}
+\begin{definition}
+    A style is a $|U| \times|U|$ stochastic matrix (a matrix with nonnegative entries and row sums equal to 1), denoting the way whereby style modifies
+the frequency of terms.
+\end{definition}
+\begin{definition}
+     A corpus model $\mathscr{C}$ is a quadruple $\mathscr{C} = (U,\mathscr{T}, \mathscr{S}, D)$, where $U$ is
+the universe of terms, $\mathscr{T}$ is a set of topics, and $\mathscr{S}$ is a set of styles, and $D$ a probability distribution on $\hat{\mathscr{T}} \times \hat{\mathscr{S}} \times \mathbb{Z}^+$, where by $\hat{\mathscr{T}}$ we denote the set of all convex combinations of topics in $\mathscr{T}$, by $\hat{\mathscr{S}}$ the set of all convex combinations of styles in $\mathscr{S}$, and by 
+$\mathbb{Z}^+$ the set of positive integers (the integers represent the lengths of documents).
+\end{definition}
+
 
 \section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
 In this part, I will provide the most significant information of paragraph 4 of the original paper. \\
