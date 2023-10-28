@@ -173,7 +173,10 @@ I.e. this approximation preserves all relative distances, now we only need to sa
  
 
 \section{Probabilistic Corpus Model} %Kes Ej: Since corpus is used for the explanation of both aspects it is more a theoretical framework.
-In this section, we introduce the probabilistic corpus model. We want to analyze a corpus (a term-document matrix) by capturing its probabilistic properties. Therefore, a formal corpus model is introduced in this section. In the rest of the paper, we assume that the corpus is generated from a corpus model.
+Because LSI relies on uncovering the statistical characteristics of a corpus, it is essential to begin with a well-defined probabilistic model of the corpus.
+In this section, we introduce the probabilistic corpus model.
+%We want to analyze a corpus (a term-document matrix) by capturing its probabilistic properties. Therefore, a formal corpus model is introduced in this section. 
+In the rest of the paper, we assume that the corpus is generated from a corpus model.
 
 \begin{definition}
 The universe $U$ is the set of all terms.
@@ -181,15 +184,22 @@ The universe $U$ is the set of all terms.
 \begin{definition}
 A topic is a probability distribution on $U$.
 \end{definition}
+The logical interpretation of this definition is the following. Assume we have a set of documents where one partition is about computer science and the other is about nature. Hence there would be two hidden topics for the whole set of documents.
+Hence the one topic will probably include terms like computer, software and algorithm, and the second will include the terms forest, ocean and earth. Thus we can interpret a topic as a probability distribution on the entire set of the terms.
+
+Another important aspect is the authorship style, it influences the frequencies of words and hence the documents. 
 \begin{definition}
     A style is a $|U| \times|U|$ stochastic matrix (a matrix with nonnegative entries and row sums equal to 1), denoting the way whereby style modifies
 the frequency of terms.
 \end{definition}
+
+After introducing the previous three definitions, now we can define the probabilistic corpus model.
 \begin{definition}
      A corpus model $\mathscr{C}$ is a quadruple $\mathscr{C} = (U,\mathscr{T}, \mathscr{S}, D)$, where $U$ is
 the universe of terms, $\mathscr{T}$ is a set of topics, and $\mathscr{S}$ is a set of styles, and $D$ a probability distribution on $\hat{\mathscr{T}} \times \hat{\mathscr{S}} \times \mathbb{Z}^+$, where by $\hat{\mathscr{T}}$ we denote the set of all convex combinations of topics in $\mathscr{T}$, by $\hat{\mathscr{S}}$ the set of all convex combinations of styles in $\mathscr{S}$, and by 
 $\mathbb{Z}^+$ the set of positive integers (the integers represent the lengths of documents).
 \end{definition}
+I.e. a corpus generated from the introduced corpus model is a set of documents in which every document is generated as follows: we sample a triple from $D$. It includes fixed $\hat{T} \in \mathscr{T}$, $\hat{S} \in \mathscr{S}$, and a fixed length $\ell$ of the document. Then we use $\hat{T}$ to sample the terms of the document $\ell$ times.
 
 
 \section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
