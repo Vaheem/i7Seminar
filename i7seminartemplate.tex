@@ -125,14 +125,47 @@ In this seminar paper, we will consider all relevant information, providing a de
 %%TODO The content of your report goes below.
 
 \section{Introduction} %KES Ej
-In this section, we will introduce the topic and explain how the paper is structured.
-My plan is to cover all sections focusing on section 5.
+%In this section, we will introduce the topic and explain how the paper is structured.
+%My plan is to cover all sections focusing on section 5.
+Retrieving information from given data has been an important aspect for a long time.
+Due to the development of information systems and the Internet, huge amounts of data are available. 
+Handling these huge amounts of data is a great challenge, so many techniques have been developed to cope with the work process. 
+Consider a scenario where we have a dataset comprising millions of documents structured as a term-document matrix and a user submits a query. Instead of just finding the documents that include the words of the query, the goal is to find documents that align with the query semantically. This semantic understanding ensures more accurate and relevant search results, even in extensive datasets.
+Latent Semantic Indexing (LSI) is one of the information retrieval techniques. It uses Singular Value Decomposition (SVD) to represent the term-document matrix as a product of three matrices. By representing the term-document matrix in such a way we want to find the underlying (latent, hidden) semantical topics (also called concepts) of the term-document matrix. With the help of such decomposition, we can map the documents and queries to a lower dimensional space and compare them not only syntactically but also semantically. (Section 2 provides more detailed information about LSI and SVD).\\
+LSI has shown strong empirical results. However, prior to the paper of Papadimitriou et al., there was no satisfactory explanation for its success (Why does LSI find the documents corresponding to the semantics of the query with high accuracy). They prove a theorem that under certain constraints LSI will always find the correct topic of the given query with high probability. Section 4 of this seminar paper elaborates on this theorem.\\
+Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability. Section 5 provides a detailed analysis of LSI by random projection and presents the proof for this statement.\\
+In the last section, we will draw a conclusion and give a short summary of this seminar paper.
+
+
 
 
  
 
 \section{LSI Background} %MI EJ
-In this part we will explain the technique LSI, how it works, and its mathematical background (SVD).
+%In this part we will explain the technique LSI, how it works, and its mathematical background (SVD).
+The corpus is defined as a set of documents. Each document is a vector of length $n$ from $\mathbb{R}^n$. Each position of the document describes a mathematical function in terms of $i$th term of the entire term space. The function can, for example, be the frequency of the $i$th term, or just 0-1 ($1$ if the term appears in the document, $0$ otherwise).\\
+Let $A \in \mathbb{R}^{n \times m}$ be a matrix of rank $r$. The Singular Value Decomposition (SVD) is a mathematical technique that represents the matrix as a product of three matrices.
+\[
+A = UDV^T.
+\]
+Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the matrix $AA^T$ (called singular values of $A$), then $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal. It is shown that every matrix can be represented in such a form [ZITATTTTT]\\
+In LSI the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document.\\
+LSI keeps only $k$-largest singular values of the matrix considering only the first $k$ columns of matrices $U$ and $V$. I.e.
+\[
+A_k = U_kD_kV_k^T
+\]
+which is an approximation of the original matrix $A$. 
+
+
+At this point, we can see the saving of the storage. In order to save the matrix $A$ entirely we need to memorize $n \cdot m$ entries. In contrast to that, we need only $n \cdot k + k\cdot k + m \cdot k$ entries, which is much smaller than  $n \cdot m$, because $k$ is much smaller than both $n$ and $m$
+
+
+
+
+
+
+
+ 
 
 \section{Probabilistic Corpus Model} %Kes Ej: Since corpus is used for the explanation of both aspects it is more a theoretical framework.
 In this section, we will introduce the Probabilistic Corpus Model.
