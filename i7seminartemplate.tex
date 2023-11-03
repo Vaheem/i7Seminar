@@ -199,21 +199,222 @@ After introducing the previous three definitions, now we can define the probabil
 the universe of terms, $\mathscr{T}$ is a set of topics, and $\mathscr{S}$ is a set of styles, and $D$ a probability distribution on $\hat{\mathscr{T}} \times \hat{\mathscr{S}} \times \mathbb{Z}^+$, where by $\hat{\mathscr{T}}$ we denote the set of all convex combinations of topics in $\mathscr{T}$, by $\hat{\mathscr{S}}$ the set of all convex combinations of styles in $\mathscr{S}$, and by 
 $\mathbb{Z}^+$ the set of positive integers (the integers represent the lengths of documents).
 \end{definition}
-I.e. a corpus generated from the introduced corpus model is a set of documents in which every document is generated as follows: we sample a triple from $D$. It includes fixed $\hat{T} \in \mathscr{T}$, $\hat{S} \in \mathscr{S}$, and a fixed length $\ell$ of the document. Then we use $\hat{T}$ to sample the terms of the document $\ell$ times.
+I.e. a corpus generated from the introduced corpus model is a set of documents in which every document is generated as follows: we sample a triple from $D$. It includes fixed $\hat{T} \in \mathscr{T}$, $\hat{S} \in \mathscr{S}$, and a fixed length $\ell$ of the document. Then we sample the terms of the document $\ell$ times according to $\hat{T}$.
 
 
 \section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
-In this part, I will provide the most significant information of paragraph 4 of the original paper. \\
-Main idea: Under certain conditions and assumptions, it can be shown why LSI performs well.
+%In this part, I will provide the most significant information of paragraph 4 of the original paper. \\
+%Main idea: Under certain conditions and assumptions, it can be shown why LSI performs well.
+In this section, we provide theorem that states under certain conditions the LSI brings similar documents together.
+First, we need a set of definitions for a corpus model.
+\begin{definition}
+  A corpus model $\mathscr{C}$ is pure if each document involves a single topic.
+\end{definition}
+
+\begin{definition}
+  A corpus model $\mathscr{C}$ is $\epsilon$-seperable ($\epsilon \in [0,1)$), if a set of terms $U_T$ is associated with each topic $T \in \mathscr{T}$ in the following way:
+\begin{itemize}
+    \item $U_T$ are mutually disjoint,
+    \item for each $T$, the total probability $T$ assign to the terms in $U_T$  is at least $1-\epsilon$
+\end{itemize}
+We call $U_T$ the primary set of terms of topic $T$.
+\end{definition}
+
+In this section, we assume that the corpus model is style-free.
+Let $\mathscr{C} = (U,\mathscr{T}, D)$ be a pure and style-free corpus model and let $k = |\mathscr{T}|$ denote the number of topics in $\mathscr{C}$. Since $\mathscr{C}$ is pure, each document generated from $\mathscr{C}$ is in fact generated from some single topic $T$: hence we say that the document belongs to topic $T$.
+Let C be a corpus generated from $\mathscr{C}$ and, for each document $d \in C$, let $v_d$ denote the vector assigned to $d$ by the rank-$k$ LSI performed on $C$.
+
+
+
+\begin{definition}
+    Rank-$k$ LSI is $\delta$-skewed on the corpus instance $C$ if, for each pair of documents $d$ and $d'$, $v_d \cdot v_{d'} \leq \delta \lVert v_d \rVert \lVert v_{d'}\rVert$,  if $d$ and $d'$ belong to different topics and $v_d \cdot v_{d'} \geq 1 - \delta  \lVert v_d \rVert \lVert v_{d'}\rVert$  if they belong to the same topic.
+\end{definition}
+The following theorem shows that under some constraints on the corpus model the rank-$k$ LSI indeed does well with high probability.
+
+\begin{theorem}
+    Let $\mathscr{C}$ be a pure, $\epsilon$-seperable corpus model with $k$ topics such that the probability each topic assigns to each term is at most $\tau$, where $\tau > 0$ is a sufficiently small constant. Let $C$ be a corpus of $m$ documents generated from $\mathscr{C}$. Then, the rank-$k$ LSI is $O(\epsilon)$-skewed on $C$ with probability $1-O(m^{-1})$.
+\end{theorem}
+
+In this seminar paper, we will omit the proof of this theorem. It can be found in the original paper.
+
+
+
+
+
+
 
 \section{LSI by Random Projection} %Ereq EJ
-In order to reduce the computational time we use dimensionality reduction and then apply LSI. We prove theorem 5 of the paper which maintains that the matrix obtained via random projection followed by LSI recovers almost as
-much as the matrix obtained by direct LSI, with high probability.
+In order to reduce the computational time we use dimensionality reduction and then apply LSI.
+According to Johnson and Lindenstrauss's lemma [ZiTAAAT]  random projection of a matrix to a lower dimensional space preserves pairwise distances of its element while representing each element in lower dimensional space. However, it does not bring semantically connected elements (i.e. documents together).  Papadimitriou et al. suggest a two-step LSI:
+\begin{enumerate}
+    \item  Apply a random projection to the initial corpus to $\ell$ dimensions, for some
+small $\ell > k$, to obtain, with high probability, a much smaller representation, which
+is still very close (in terms of distances and angles) to the original corpus.
+
+\item Apply rank $O(k)$ LSI (because of the random projection, the number of
+singular values kept may have to be increased a little)
+\end{enumerate}
+
+Before diving into the main theorem of this chapter, let's cover some formal groundwork.
+We again consider $A \in \mathbb{R}^{n \times m}$ which represents our term-document matrix and is generated from the corpus model. Let $R \in \mathbb{R}^{n \times l} $ be a random column-orthonormal matrix. We use $R$ to project $A$ into $\ell$-dimensional space. We define $B:= \sqrt{n/\ell}R^TA$ as the scaled random projection of $A$.
+The SVD representations of A and B are denoted as follows:
+\[
+A = \sum_{i=1}^r \sigma_i u_i v_i \,\,\,\,\,\,\,\,\text{and}\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i.
+\]
+We also introduce the following lemma with its corollary.
+\begin{lemma}
+Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...t$
+\[
+\lambda_p^2 \geq \dfrac{1}{k} [(1-\epsilon) \sum_{i=1}^k \sigma_i^2 - \sum_{j=1}^{p-1} \lambda_j^2].
+\]
+\end{lemma}
+\begin{corollary}
+\[
+\sum_{p=1}^{2k} \lambda_p^2 \geq (1-\epsilon) \lVert A_k \rVert_F^2.
+\]
+\end{corollary}
+\begin{theorem}
+    Parsevals identity
+\end{theorem}
+\begin{theorem}
+    Eckart-Young-Minsky theorem.
+\end{theorem}
+
+Our rank-$2k$ approximation of matrix $A$ is denoted as
+\[
+B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T
+\]
+
+Now we can introduce the main theorem of this section.
+\begin{theorem}
+\[
+    \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2
+\]
+Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
+\end{theorem}
+
+\begin{proof}
+We have 
+\[
+A = \sum_{i=1}^r \sigma_i u_i v_i \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i
+\]
+
+\[
+ B=\sum_{i=1}^t \lambda_i a_i b_i\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T.
+\]
+
+$b_1,...,b_n$ is an orthonormal set of vectors spanning the row space of $A$, hence using the Parseval's identity we can write
+\[
+ \lVert A - B_{2k} \rVert_F^2 = \sum_{i=1}^n |(A - B_{2k})b_i|^2
+\]
+for $i = 1,...,2k$, because $b_i^Tb_i = 1$ we have
+\[
+(A - B_{2k})b_i = Ab_i - Ab_i = 0,
+\]
+and for  $i = 2k+1,...,n$, because $b_j^Tb_i = 0$ we have
+\[
+(A - B_{2k})b_i = Ab_i.
+\]
+Hence
+
+\begin{align*}
+    \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2\\
+    &= \sum_{i=2k+1}^n |A b_i|^2 = \sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\
+    &\overset{\text{Parseval's id.}}{=} \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2 
+\end{align*}
+
+On the other hand, we have
+\begin{align*}
+ \lVert A - B_{2k} \rVert_F^2 &\overset{\text{E-Y-M theorem}}{=} \sum_{i=k+1}^n \sigma_i^2 \\
+ &\overset{\text{Frob. norm def.}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+\end{align*}
+
+Now we consider 
+\begin{align*}
+   \lVert A - B_{2k} \rVert_F^2 - \lVert A - A_k \rVert_F^2 &= \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2  - (\lVert A \rVert_F^2 - \lVert A_k \rVert_F^2)\\ 
+   &= \lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2
+\end{align*}
+That is equivalent to
+\[
+\lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)
+\]
+
+For the next step, we show
+\[
+(1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
+\]
+\begin{align*}
+    \sum_{i=1}^{2k} \lambda_i^2 \overset{|Bb_i| = \lambda_i}{=}\sum_{i=1}^{2k}|Bb_i|^2 
+    \overset{\text{sbst. B}}{=} \sum_{i=1}^{2k} | \sqrt{\dfrac{n}{\ell}} R^T (Ab_i)|^2
+    = \sum_{i=1}^{2k} \dfrac{n}{\ell}| R^T (Ab_i)|^2
+\end{align*}
+
+Now from the Random projection theorem for very large $\ell$ we have for each $i$
+\[
+ \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
+\]
+with high probability.
+
+Hence with a high probability
+\[
+(1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
+\]
+
+Now we have
+\begin{align*}
+    \sum_{i=1}^{2k} |A b_i|^2 \geq \dfrac{1}{(1+\epsilon)} \sum_{i=1}^{2k} \lambda_i^2 
+    \overset{\text{Cor.11}}{\geq} \dfrac{(1-\epsilon)}{(1+\epsilon)} \lVert A_k \rVert_F^2 
+    \geq (1-2\epsilon) \lVert A_k \rVert_F^2
+\end{align*}
+I.e.
+\[
+\sum_{i=1}^{2k} |A b_i|^2 \geq (1-2\epsilon) \lVert A_k \rVert_F^2
+\]
+
+Now we substitute this result in [BUILD REFFFFFF] getting
+\begin{align*}
+    \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2\\
+\iff \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
+\end{align*}
+
+Due to the definition of Frobenius norm, we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. This inequality leads us to the conclusive result of our proof
+\[
+\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2.
+\]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%REFORMULATE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+What are the computational savings achieved by the two-step method? Let A be an nm matrix. The time to compute LSI is O(mnc) if A is sparse with about c
+nonzero entries per column (i.e., c is the average number of terms in a document).
+The time needed to compute the random projection to l dimensions is O(mcl). After
+the projection, the time to compute LSI is O(ml2
+). So the total time is O(ml(l+c)).
+To obtain an = approximation we need l to be O((log n)=2
+). Thus the running time
+of the two-step method is asymptotically superior: O(m(log2 n+c log n)) compared
+to O(mnc).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+\end{proof}
+
+%We prove theorem 5 of the paper which maintains that the matrix obtained via random projection followed by LSI recovers almost as
+%much as the matrix obtained by direct LSI, with high probability.
 
 
 
 \section{Conclusion and Summary} %Kes EJic 
-In this section, we will draw conclusions based on the findings presented in the seminar paper and give a brief summary of the paper.
+In this section, we will draw conclusions based on the findings presented in the seminar paper and give a brief summary of the paper.\\
+\\
+\\
+\\
+\\
+Let $A \in \mathbb{R}^{n \times m}$ be a matrix and $b_1,...,b_n$ an orthonormal set of vectors where $b_i \in \mathbb{R}^{m}$.
+$F$ is the Frobenius norm of a matrix. Why is the following correct? $$||A||_F^2 = \sum_{i=1}^n |Ab_i|^2$$
 
 
 
