@@ -259,7 +259,7 @@ Before diving into the main theorem of this chapter, let's cover some formal gro
 We again consider $A \in \mathbb{R}^{n \times m}$ which represents our term-document matrix and is generated from the corpus model. Let $R \in \mathbb{R}^{n \times l} $ be a random column-orthonormal matrix. We use $R$ to project $A$ into $\ell$-dimensional space. We define $B:= \sqrt{n/\ell}R^TA$ as the scaled random projection of $A$.
 The SVD representations of A and B are denoted as follows:
 \[
-A = \sum_{i=1}^r \sigma_i u_i v_i \,\,\,\,\,\,\,\,\text{and}\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i.
+A = \sum_{i=1}^r \sigma_i u_i v_i^T \,\,\,\,\,\,\,\,\text{and}\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i^T.
 \]
 We also introduce the following lemma with its corollary.
 \begin{lemma}
@@ -274,11 +274,23 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 \]
 \end{corollary}
 \begin{theorem}
-    Parsevals identity
+    Parsevals identity \cite{hogben2013handbook}:
+    Let $B = {b_1,...,b_n}$ be an orthonormal basis for a space A. Then for each $a \in A$, $|a|^2 = \sum_{i=1}^n (ab_i)^2$.
 \end{theorem}
-\begin{theorem}
-    Eckart-Young-Minsky theorem.
-\end{theorem}
+\begin{lemma}
+\label{lem:A_Ak}
+\[
+\lVert A - A_k \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2. 
+\]
+\end{lemma} 
+\begin{proof}
+\[
+\lVert A - A_k \rVert_F^2 = \lVert \sum_{i=k+1}^n \sigma_i u_i v_i^T \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2 
+\]
+The second equality holds since the squared Frobenius norm of every matrix can be written as sum of squares of its singular values \cite{FrobeniusDef}.
+    
+\end{proof}
+
 
 Our rank-$2k$ approximation of matrix $A$ is denoted as
 \[
@@ -296,14 +308,14 @@ Informally, the theorem states that the original matrix $A$ after applying rando
 \begin{proof}
 We have 
 \[
-A = \sum_{i=1}^r \sigma_i u_i v_i \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i
+A = \sum_{i=1}^n \sigma_i u_i v_i^T \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T
 \]
 
 \[
- B=\sum_{i=1}^t \lambda_i a_i b_i\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T.
+ B=\sum_{i=1}^t \lambda_i a_i b_i^T\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T.
 \]
 
-$b_1,...,b_n$ is an orthonormal set of vectors spanning the row space of $A$, hence using the Parseval's identity we can write
+$b_1,...,b_n$ is an orthonormal set of vectors spanning the row space of $A$ (because $R$ is an orthonormal matrix, resulting orthonormal projection) hence using the Parseval's identity we can write
 \[
  \lVert A - B_{2k} \rVert_F^2 = \sum_{i=1}^n |(A - B_{2k})b_i|^2
 \]
@@ -325,8 +337,8 @@ Hence
 
 On the other hand, we have
 \begin{align*}
- \lVert A - B_{2k} \rVert_F^2 &\overset{\text{E-Y-M theorem}}{=} \sum_{i=k+1}^n \sigma_i^2 \\
- &\overset{\text{Frob. norm def.}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+ \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2 \\
+ &\overset{\text{Frob. prop. \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
 \end{align*}
 
 Now we consider 
@@ -381,18 +393,23 @@ Due to the definition of Frobenius norm, we have  $\lVert A \rVert_F^2 \geq \lVe
 \[
 \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2.
 \]
-
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%REFORMULATE%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-What are the computational savings achieved by the two-step method? Let A be an nm matrix. The time to compute LSI is O(mnc) if A is sparse with about c
-nonzero entries per column (i.e., c is the average number of terms in a document).
-The time needed to compute the random projection to l dimensions is O(mcl). After
-the projection, the time to compute LSI is O(ml2
-). So the total time is O(ml(l+c)).
-To obtain an = approximation we need l to be O((log n)=2
-). Thus the running time
-of the two-step method is asymptotically superior: O(m(log2 n+c log n)) compared
-to O(mnc).
+The two-step method offers significant computational savings compared to traditional Latent Semantic Indexing (LSI).
+Consider a matrix \( A \) of size \( n \times m \). If \( A \) is sparse, containing approximately \( c \) nonzero entries per column (where \( c \) represents the average number of terms in a document), the time complexity to compute Latent Semantic Indexing (LSI) is \( O(mnc) \).
+The time complexity for computing the random projection to \( \ell \) dimensions is \( O(mc\ell) \).
+%%%%
+After the projection, we compute LSI. Its computation is in $O(m\ell^2)$. Hence the total time is $O(m\ell(\ell+c))$.
+For an $\epsilon$ approximation $\ell$ has to be in $O((\log n)/\epsilon^2)$. 
+So, the two-step method outperforms the single-step method in terms of runtime. The time complexity is \(O(m(\log^2 n + c \log n))\) for the two-step method, whereas it is \(O(mnc)\) for the single-step method.
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -400,23 +417,17 @@ to O(mnc).
 
 
 
-\end{proof}
+
 
 %We prove theorem 5 of the paper which maintains that the matrix obtained via random projection followed by LSI recovers almost as
 %much as the matrix obtained by direct LSI, with high probability.
 
 
 
-\section{Conclusion and Summary} %Kes EJic 
-In this section, we will draw conclusions based on the findings presented in the seminar paper and give a brief summary of the paper.\\
-\\
-\\
-\\
-\\
-Let $A \in \mathbb{R}^{n \times m}$ be a matrix and $b_1,...,b_n$ an orthonormal set of vectors where $b_i \in \mathbb{R}^{m}$.
-$F$ is the Frobenius norm of a matrix. Why is the following correct? $$||A||_F^2 = \sum_{i=1}^n |Ab_i|^2$$
+\section{Summary and Conclusion} %Kes EJic 
+In our seminar paper, we gave the most relevant information of the scientific paper from Papadimitriou et al. introducing the theorem [Zite NUmmer von Theorem] which shows the LSI's good performance assuming some assumptions on the given term-document matrix. These assumptions are sometimes not given in a real-world scenario. Hence the authors hope that this work will serve as a motivation for further work where these assumptions on the term-document matrix are not necessary.
 
-
+In addition, we considered the LSI by random projection a two-step LSI which reduces the computational time. We showed the central theorem which argued that the two-step LSI is close to the single-step LSI with high probability also giving a detailed proof of the theorem.
 
 
 
