@@ -90,7 +90,7 @@
 \publishers{RWTH Aachen University}	% Do not edit this line.
 
 %%TODO Change this to your report title.
-\title{Latent Semantic Indexing: A Probabilistic Analysis}
+\title{Latent Semantic Indexing}
 
 %%TODO Change this to your name.
 \author{Vahe Eminyan}
@@ -100,17 +100,17 @@
 
 %%TODO Provide a short abstract for your report.
 \begin{abstract}
-This seminar paper gives an analysis of the scientific paper "Latent Semantic Indexing: A Probabilistic Analysis" by Papadimitriou et al.\\
+This seminar paper gives an analysis of the work of  Papadimitriou et al. "Latent Semantic Indexing: A Probabilistic Analysis" \cite{APAPADIMITRIOU2000217}\\
 Latent semantic indexing (LSI) is one of the techniques used for information retrieval.
 LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.\\
-LSI is widely used in practice and has shown strong empirical results. However, due to the large size of term-document matrices, the computation can be slow.
+LSI is widely used in practice and has shown strong empirical results \cite{LSIusage1, LSIusage2, LSIusage3}. However, due to the large size of term-document matrices, the computation can be slow.
 These lead to two interesting questions: why does LSI perform so well, and how can we speed up computations?
 Papadimitriou et al. address both of these questions.
 They provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.\\
 Additionally, to expedite computations, they suggest initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
 They prove that the matrix obtained via random projection followed by LSI recovers almost as
 much as the matrix obtained by direct LSI, with high probability.\\
-In this seminar paper, we will consider all relevant information, providing a detailed analysis of LSI by random projection.
+In this seminar paper, we delve into both aforementioned aspects, with a specific emphasis on the second question. 
 
 
 
@@ -136,6 +136,11 @@ LSI has shown strong empirical results. However, prior to the paper of Papadimit
 Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability. Section 5 provides a detailed analysis of LSI by random projection and presents the proof for this statement.\\
 In the last section, we will draw a conclusion and give a short summary of this seminar paper.
 
+\section{Related Work}
+Hofmann et. al analyze the LSI from a different probabilistic point of view comparing SVD to mixture decomposition using expectation maximization algorithm \cite{Relatedwork1}.
+Despite analyzing the LSI's good performance, Frieze et al. give another method to speed up LSI, introducing an approach that includes Fast-Monte-Carlo algorithms \cite{Relatedwork2}.
+
+
 
 
 
@@ -148,7 +153,7 @@ Let $A \in \mathbb{R}^{n \times m}$ be a matrix of rank $r$. The Singular Value 
 \[
 A = UDV^T.
 \]
-Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the matrix $AA^T$ (called singular values of $A$), then $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal. It is shown that every matrix can be represented in such a form [ZITATTTTT]\\
+Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the matrix $AA^T$ (called singular values of $A$), then $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal. It is shown that every matrix can be represented in such a form \cite{strang2005}\\
 In LSI the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document.\\
 LSI keeps only $k$-largest singular values of the matrix considering only the first $k$ columns of matrices $U$ and $V$. I.e.
 \[
@@ -157,9 +162,9 @@ A_k = U_kD_kV_k^T
 which is an approximation of the original matrix $A$. 
 In order to find the most similar documents for the submitted query we map the query to the $k$-dimensional space by using the matrix $U_k$. Afterward, we compare the $k$-dimensional projection with $k$-dimensional representations of the documents in the corpus. For this comparison, we can use cosine similarity. Thus we only need to store the three matrices $U_k$, $D_k$, and $V_k$.
 At this point, we can see the saving of the storage. In order to save the matrix $A$ entirely we need to memorize $n \cdot m$ entries. In contrast to that, we need only $n \cdot k + k\cdot k + m \cdot k$ entries, which is much smaller than  $n \cdot m$, because $k$ is much smaller than both $n$ and $m$.\\
-The approximation $A_k$ of rank $k$ is the matrix that minimizes the Frobenius norm of the  of $A - A_k$. Formally:
+The approximation $A_k$ of rank $k$ is the matrix that minimizes the Frobenius norm of the of $A - A_k$. Formally:
 \begin{theorem}
-	[ZITATTT]Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$.
+	\cite{EckartYoung} Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$.
 \end{theorem}
 I.e. this approximation preserves all relative distances, now we only need to say why it finds queries and documents that are semantically related.
 
