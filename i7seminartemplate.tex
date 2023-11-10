@@ -101,16 +101,20 @@
 
 %%TODO Provide a short abstract for your report.
 \begin{abstract}
-This seminar paper gives an analysis of the work of  Papadimitriou et al. "Latent Semantic Indexing: A Probabilistic Analysis" \cite{APAPADIMITRIOU2000217}\\
+This seminar paper gives an analysis of the work of  Papadimitriou et al. "Latent Semantic Indexing: A Probabilistic Analysis" \cite{APAPADIMITRIOU2000217}.
+
 Latent semantic indexing (LSI) is one of the techniques used for information retrieval.
-LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.\\
+LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.
+
 LSI is widely used in practice and has shown strong empirical results \cite{LSIusage1, LSIusage2, LSIusage3}. However, due to the large size of term-document matrices, the computation can be slow.
 These lead to two interesting questions: why does LSI perform so well, and how can we speed up computations?
 Papadimitriou et al. address both of these questions.
-They provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.\\
+They provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.
+
 Additionally, to expedite computations, they suggest initially mapping the large matrices into low-dimensional spaces using random projections and then applying LSI to this reduced-dimensional projection.
 They prove that the matrix obtained via random projection followed by LSI recovers almost as
-much as the matrix obtained by direct LSI, with high probability.\\
+much as the matrix obtained by direct LSI, with high probability.
+
 In this seminar paper, we delve into both aforementioned aspects, with a specific emphasis on the second question. 
 
 
@@ -132,9 +136,12 @@ Retrieving information from given data has been an important aspect for a long t
 Due to the development of information systems and the Internet, huge amounts of data are available. 
 Handling these huge amounts of data is a great challenge, so many techniques have been developed to cope with the work process. 
 Consider a scenario where we have a dataset comprising millions of documents structured as a term-document matrix and a user submits a query. Instead of just finding the documents that include the words of the query, the goal is to find documents that align with the query semantically. This semantic understanding ensures more accurate and relevant search results, even in extensive datasets.
-Latent Semantic Indexing (LSI) is one of the information retrieval techniques. It uses Singular Value Decomposition (SVD) to represent the term-document matrix as a product of three matrices. By representing the term-document matrix in such a way we want to find the underlying (latent, hidden) semantical topics (also called concepts) of the term-document matrix. With the help of such decomposition, we can map the documents and queries to a lower dimensional space and compare them not only syntactically but also semantically. (Section 2 provides more detailed information about LSI and SVD).\\
-LSI has shown strong empirical results. However, prior to the paper of Papadimitriou et al., there was no satisfactory explanation for its success (Why does LSI find the documents corresponding to the semantics of the query with high accuracy). They prove a theorem that under certain constraints LSI will always find the correct topic of the given query with high probability. Section 4 of this seminar paper elaborates on this theorem.\\
-Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability. Section 5 provides a detailed analysis of LSI by random projection and presents the proof for this statement.\\
+Latent Semantic Indexing (LSI) is one of the information retrieval techniques. It uses Singular Value Decomposition (SVD) to represent the term-document matrix as a product of three matrices. By representing the term-document matrix in such a way we want to find the underlying (latent, hidden) semantical topics (also called concepts) of the term-document matrix. With the help of such decomposition, we can map the documents and queries to a lower dimensional space and compare them not only syntactically but also semantically. (Section 2 provides more detailed information about LSI and SVD).
+
+LSI has shown strong empirical results. However, prior to the paper of Papadimitriou et al., there was no satisfactory explanation for its success (Why does LSI find the documents corresponding to the semantics of the query with high accuracy). They prove a theorem that under certain constraints LSI will always find the correct topic of the given query with high probability. Section 4 of this seminar paper elaborates on this theorem.
+
+Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability. Section 5 provides a detailed analysis of LSI by random projection and presents the proof for this statement.
+
 In the last section, we will draw a conclusion and give a short summary of this seminar paper.
 
 \section{Related Work}
@@ -149,7 +156,8 @@ Despite analyzing the LSI's good performance, Frieze et al. give another method 
 
 \section{LSI Background} %MI EJ
 %In this part we will explain the technique LSI, how it works, and its mathematical background (SVD).
-The corpus is defined as a set of documents. Each document is a vector of length $n$ from $\mathbb{R}^n$. Each position of the document describes a mathematical function in terms of $i$th term of the entire term space. The function can, for example, be the frequency of the $i$th term, or just 0-1 ($1$ if the term appears in the document, $0$ otherwise).\\
+The corpus is defined as a set of documents. Each document is a vector of length $n$ from $\mathbb{R}^n$. Each position of the document describes a mathematical function in terms of $i$th term of the entire term space. The function can, for example, be the frequency of the $i$th term, or just 0-1 ($1$ if the term appears in the document, $0$ otherwise).
+
 Let $A \in \mathbb{R}^{n \times m}$ be a matrix of rank $r$. The Singular Value Decomposition (SVD) is a mathematical technique that represents the matrix as a product of three matrices.
 \[
 A = UDV^T.
@@ -187,15 +195,17 @@ Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the mat
 
 
 
-In LSI the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document.\\
+In LSI the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document.
+
 LSI keeps only $k$-largest singular values of the matrix considering only the first $k$ columns of matrices $U$ and $V$. I.e.
 \[
 A_k = U_kD_kV_k^T
 \]
 which is an approximation of the original matrix $A$. 
 In order to find the most similar documents for the submitted query we map the query to the $k$-dimensional space by using the matrix $U_k$. Afterward, we compare the $k$-dimensional projection with $k$-dimensional representations of the documents in the corpus. For this comparison, we can use cosine similarity. Thus we only need to store the three matrices $U_k$, $D_k$, and $V_k$.
-At this point, we can see the saving of the storage. In order to save the matrix $A$ entirely we need to memorize $n \cdot m$ entries. In contrast to that, we need only $n \cdot k + k\cdot k + m \cdot k$ entries, which is much smaller than  $n \cdot m$, because $k$ is much smaller than both $n$ and $m$.\\
-The approximation $A_k$ of rank $k$ is the matrix that minimizes the Frobenius norm of the of $A - A_k$. Formally:
+At this point, we can see the saving of the storage. In order to save the matrix $A$ entirely we need to memorize $n \cdot m$ entries. In contrast to that, we need only $n \cdot k + k\cdot k + m \cdot k$ entries, which is much smaller than  $n \cdot m$, because $k$ is much smaller than both $n$ and $m$.
+
+The rank $k$ approximation of matrix $A$ denoted as $A_k$  is the matrix that minimizes the Frobenius norm of $A - A_k$. Formally:
 \begin{theorem}
 	\cite{EckartYoung} Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$.
 \end{theorem}
@@ -246,7 +256,7 @@ First, we need a set of definitions for a corpus model.
 \end{definition}
 
 \begin{definition}
-  A corpus model $\mathscr{C}$ is $\epsilon$-seperable ($\epsilon \in [0,1)$), if a set of terms $U_T$ is associated with each topic $T \in \mathscr{T}$ in the following way:
+  A corpus model $\mathscr{C}$ is $\epsilon$-separable ($\epsilon \in [0,1)$), if a set of terms $U_T$ is associated with each topic $T \in \mathscr{T}$ in the following way:
 \begin{itemize}
     \item $U_T$ are mutually disjoint,
     \item for each $T$, the total probability $T$ assign to the terms in $U_T$  is at least $1-\epsilon$
@@ -266,6 +276,7 @@ Let C be a corpus generated from $\mathscr{C}$ and, for each document $d \in C$,
 The following theorem shows that under some constraints on the corpus model the rank-$k$ LSI indeed does well with high probability.
 
 \begin{theorem}
+\label{theorem: lsiperform}
     Let $\mathscr{C}$ be a pure, $\epsilon$-seperable corpus model with $k$ topics such that the probability each topic assigns to each term is at most $\tau$, where $\tau > 0$ is a sufficiently small constant. Let $C$ be a corpus of $m$ documents generated from $\mathscr{C}$. Then, the rank-$k$ LSI is $O(\epsilon)$-skewed on $C$ with probability $1-O(m^{-1})$.
 \end{theorem}
 
@@ -318,10 +329,11 @@ We also introduce the following lemma with its corollary.
 \begin{lemma}
 Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...t$
 \[
-\lambda_p^2 \geq \dfrac{1}{k} [(1-\epsilon) \sum_{i=1}^k \sigma_i^2 - \sum_{j=1}^{p-1} \lambda_j^2].
+\lambda_p^2 \geq \dfrac{1}{k} \left[(1-\epsilon) \sum_{i=1}^k \sigma_i^2 - \sum_{j=1}^{p-1} \lambda_j^2\right].
 \]
 \end{lemma}
 \begin{corollary}
+\label{cor:10}
 \[
 \sum_{p=1}^{2k} \lambda_p^2 \geq (1-\epsilon) \lVert A_k \rVert_F^2.
 \]
@@ -352,11 +364,13 @@ B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T
 
 Now we can introduce the main theorem of this section.
 \begin{theorem}
+\label{theorem:imp}
 \[
     \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2
 \]
-Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
 \end{theorem}
+Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
+
 
 \begin{proof}
 We have 
@@ -409,11 +423,11 @@ For the next step, we show
 \]
 \begin{align*}
     \sum_{i=1}^{2k} \lambda_i^2 \overset{|Bb_i| = \lambda_i}{=}\sum_{i=1}^{2k}|Bb_i|^2 
-    \overset{\text{sbst. B}}{=} \sum_{i=1}^{2k} | \sqrt{\dfrac{n}{\ell}} R^T (Ab_i)|^2
-    = \sum_{i=1}^{2k} \dfrac{n}{\ell}| R^T (Ab_i)|^2
+    \overset{\text{sbst. B}}{=} \sum_{i=1}^{2k} \left| \sqrt{\dfrac{n}{\ell}} R^T (Ab_i)\right|^2
+    = \sum_{i=1}^{2k} \dfrac{n}{\ell}\left| R^T (Ab_i)\right|^2
 \end{align*}
-
-Now from the Random projection theorem for very large $\ell$ we have for each $i$
+%Random projection theorem
+Now from the Johnson-Lindenstrauss lemma \cite{johnson1984Lindenstrauss} for very large $\ell$ we have for each $i$
 \[
  \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
 \]
@@ -427,7 +441,7 @@ Hence with a high probability
 Now we have
 \begin{align*}
     \sum_{i=1}^{2k} |A b_i|^2 \geq \dfrac{1}{(1+\epsilon)} \sum_{i=1}^{2k} \lambda_i^2 
-    \overset{\text{Cor.11}}{\geq} \dfrac{(1-\epsilon)}{(1+\epsilon)} \lVert A_k \rVert_F^2 
+    \overset{\text{Cor. \ref{cor:10}}}{\geq} \dfrac{(1-\epsilon)}{(1+\epsilon)} \lVert A_k \rVert_F^2 
     \geq (1-2\epsilon) \lVert A_k \rVert_F^2
 \end{align*}
 I.e.
@@ -477,9 +491,9 @@ So, the two-step method outperforms the single-step method in terms of runtime. 
 
 
 \section{Summary and Conclusion} %Kes EJic 
-In our seminar paper, we gave the most relevant information of the scientific paper from Papadimitriou et al. introducing the theorem [Zite NUmmer von Theorem] which shows the LSI's good performance assuming some assumptions on the given term-document matrix. These assumptions are sometimes not given in a real-world scenario. Hence the authors hope that this work will serve as a motivation for further work where these assumptions on the term-document matrix are not necessary.
+In our seminar paper, we gave the most relevant information of the scientific paper from Papadimitriou et al. introducing the theorem \ref{theorem: lsiperform} which shows the LSI's good performance assuming some assumptions on the given term-document matrix. These assumptions are sometimes not given in a real-world scenario. Hence the authors hope that this work will serve as a motivation for further work where these assumptions on the term-document matrix are not necessary.
 
-In addition, we considered the LSI by random projection a two-step LSI which reduces the computational time. We showed the central theorem which argued that the two-step LSI is close to the single-step LSI with high probability also giving a detailed proof of the theorem.
+Furthermore, we considered the LSI by random projection a two-step LSI which reduces the computational time. We showed the central theorem which argued that the two-step LSI is close to the single-step LSI with high probability \ref{theorem:imp} also giving a detailed proof of the theorem.
 
 
 
