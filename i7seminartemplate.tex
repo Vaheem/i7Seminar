@@ -26,7 +26,8 @@
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{positioning,arrows.meta,matrix,decorations.pathreplacing,calc,positioning}
+
 
 % Colors
 \usepackage{xcolor} %already loaded by tikz, but here for completeness
@@ -153,7 +154,39 @@ Let $A \in \mathbb{R}^{n \times m}$ be a matrix of rank $r$. The Singular Value 
 \[
 A = UDV^T.
 \]
-Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the matrix $AA^T$ (called singular values of $A$), then $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal. It is shown that every matrix can be represented in such a form \cite{strang2005}\\
+Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the matrix $AA^T$ (called singular values of $A$), then $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal \ref{eq:matrixA}. Every matrix can be represented in this form \cite{strang2005}.
+\begin{equation}
+    A = 
+\Large
+\begin{bmatrix}
+    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+    u_1 & u_2 & \cdots & u_r \\
+    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+\end{bmatrix}
+\normalsize
+\begin{bmatrix}
+    \sigma_1 & 0 & \cdots & 0 \\
+    0 & \sigma_2 & \cdots & 0 \\
+    \vdots & \vdots & \ddots & \vdots \\
+    0 & 0 & \cdots & \sigma_r
+\end{bmatrix}
+%\small 
+\begin{bmatrix}
+    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+    v_1 & v_2 & \cdots & v_r \\
+    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+\end{bmatrix}^T
+\label{eq:matrixA}
+\end{equation}
+
+
+
+
+
+
+
+
+
 In LSI the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document.\\
 LSI keeps only $k$-largest singular values of the matrix considering only the first $k$ columns of matrices $U$ and $V$. I.e.
 \[
@@ -166,7 +199,7 @@ The approximation $A_k$ of rank $k$ is the matrix that minimizes the Frobenius n
 \begin{theorem}
 	\cite{EckartYoung} Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$.
 \end{theorem}
-I.e. this approximation preserves all relative distances, now we only need to say why it finds queries and documents that are semantically related.
+I.e. this approximation preserves all relative distances, now we only need to show why it finds queries and documents that are semantically related.
 
 
 
@@ -182,12 +215,8 @@ Because LSI relies on uncovering the statistical characteristics of a corpus, it
 In this section, we introduce the probabilistic corpus model.
 %We want to analyze a corpus (a term-document matrix) by capturing its probabilistic properties. Therefore, a formal corpus model is introduced in this section. 
 In the rest of the paper, we assume that the corpus is generated from a corpus model.
-
 \begin{definition}
-The universe $U$ is the set of all terms.
-\end{definition}
-\begin{definition}
-A topic is a probability distribution on $U$.
+A topic is a probability distribution on the universe of all terms $U$.
 \end{definition}
 The logical interpretation of this definition is the following. Assume we have a set of documents where one partition is about computer science and the other is about nature. Hence there would be two hidden topics for the whole set of documents.
 Hence the one topic will probably include terms like computer, software and algorithm, and the second will include the terms forest, ocean and earth. Thus we can interpret a topic as a probability distribution on the entire set of the terms.
@@ -240,7 +269,7 @@ The following theorem shows that under some constraints on the corpus model the 
     Let $\mathscr{C}$ be a pure, $\epsilon$-seperable corpus model with $k$ topics such that the probability each topic assigns to each term is at most $\tau$, where $\tau > 0$ is a sufficiently small constant. Let $C$ be a corpus of $m$ documents generated from $\mathscr{C}$. Then, the rank-$k$ LSI is $O(\epsilon)$-skewed on $C$ with probability $1-O(m^{-1})$.
 \end{theorem}
 
-In this seminar paper, we will omit the proof of this theorem. It can be found in the original paper.
+The proof of this theorem can be found in the original paper.
 
 
 
@@ -250,18 +279,37 @@ In this seminar paper, we will omit the proof of this theorem. It can be found i
 
 \section{LSI by Random Projection} %Ereq EJ
 In order to reduce the computational time we use dimensionality reduction and then apply LSI.
-According to Johnson and Lindenstrauss's lemma [ZiTAAAT]  random projection of a matrix to a lower dimensional space preserves pairwise distances of its element while representing each element in lower dimensional space. However, it does not bring semantically connected elements (i.e. documents together).  Papadimitriou et al. suggest a two-step LSI:
+According to Johnson and Lindenstrauss's lemma \cite{johnson1984Lindenstrauss}  random projection of a matrix to a lower dimensional space preserves pairwise distances of its element while representing each element in lower dimensional space. However, it does not bring semantically connected elements (i.e. documents together).  Papadimitriou et al. suggest a two-step LSI:
 \begin{enumerate}
     \item  Apply a random projection to the initial corpus to $\ell$ dimensions, for some
 small $\ell > k$, to obtain, with high probability, a much smaller representation, which
 is still very close (in terms of distances and angles) to the original corpus.
+
+
+\begin{equation}
+    B = 
+\sqrt{\dfrac{n}{l}}
+\cdot
+\begin{bmatrix}
+    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+    r_1 & r_2 & \cdots & r_{\ell} \\
+    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+\end{bmatrix}^T
+%\small 
+\begin{bmatrix}
+    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+    a_1 & a_2 & \cdots & a_m \\
+    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+\end{bmatrix}
+\label{eq:matrixB}
+\end{equation}
 
 \item Apply rank $O(k)$ LSI (because of the random projection, the number of
 singular values kept may have to be increased a little)
 \end{enumerate}
 
 Before diving into the main theorem of this chapter, let's cover some formal groundwork.
-We again consider $A \in \mathbb{R}^{n \times m}$ which represents our term-document matrix and is generated from the corpus model. Let $R \in \mathbb{R}^{n \times l} $ be a random column-orthonormal matrix. We use $R$ to project $A$ into $\ell$-dimensional space. We define $B:= \sqrt{n/\ell}R^TA$ as the scaled random projection of $A$.
+We again consider $A \in \mathbb{R}^{n \times m}$ which represents our term-document matrix and is generated from the corpus model. Let $R \in \mathbb{R}^{n \times l} $ be a random column-orthonormal matrix. We use $R$ to project $A$ into $\ell$-dimensional space. We define $B:= \sqrt{n/\ell}R^TA$ as the scaled random projection of $A$, see the visualization in \ref{eq:matrixB}.
 The SVD representations of A and B are denoted as follows:
 \[
 A = \sum_{i=1}^r \sigma_i u_i v_i^T \,\,\,\,\,\,\,\,\text{and}\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i^T.
@@ -313,12 +361,12 @@ Informally, the theorem states that the original matrix $A$ after applying rando
 \begin{proof}
 We have 
 \[
-A = \sum_{i=1}^n \sigma_i u_i v_i^T \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T
+A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.
 \]
 
-\[
- B=\sum_{i=1}^t \lambda_i a_i b_i^T\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T.
-\]
+%\[
+% B=\sum_{i=1}^t \lambda_i a_i b_i^T\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T.
+%\]
 
 $b_1,...,b_n$ is an orthonormal set of vectors spanning the row space of $A$ (because $R$ is an orthonormal matrix, resulting orthonormal projection) hence using the Parseval's identity we can write
 \[
@@ -335,26 +383,25 @@ and for  $i = 2k+1,...,n$, because $b_j^Tb_i = 0$ we have
 Hence
 
 \begin{align*}
-    \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2\\
-    &= \sum_{i=2k+1}^n |A b_i|^2 = \sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\
+    \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2 = \sum_{i=2k+1}^n |A b_i|^2 = \sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\
     &\overset{\text{Parseval's id.}}{=} \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2 
 \end{align*}
 
 On the other hand, we have
 \begin{align*}
- \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2 \\
- &\overset{\text{Frob. prop. \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+ \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2  \overset{\text{Frob. prop. \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
 \end{align*}
 
 Now we consider 
 \begin{align*}
-   \lVert A - B_{2k} \rVert_F^2 - \lVert A - A_k \rVert_F^2 &= \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2  - (\lVert A \rVert_F^2 - \lVert A_k \rVert_F^2)\\ 
-   &= \lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2
+   \lVert A - B_{2k} \rVert_F^2 - \lVert A - A_k \rVert_F^2 &= \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2  - (\lVert A \rVert_F^2 - \lVert A_k \rVert_F^2) = \lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2
 \end{align*}
 That is equivalent to
-\[
-\lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)
-\]
+\begin{equation}
+   \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)  \label{eq:A} 
+\end{equation}
+
+
 
 For the next step, we show
 \[
@@ -388,13 +435,14 @@ I.e.
 \sum_{i=1}^{2k} |A b_i|^2 \geq (1-2\epsilon) \lVert A_k \rVert_F^2
 \]
 
-Now we substitute this result in [BUILD REFFFFFF] getting
+Now we substitute this result in equation \ref{eq:A} getting
 \begin{align*}
     \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2\\
 \iff \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
 \end{align*}
 
-Due to the definition of Frobenius norm, we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. This inequality leads us to the conclusive result of our proof
+Due to the formulation of Frobenius norm as in \ref{lem:A_Ak}, %\cite{FrobeniusDef}
+ we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. This inequality leads us to the conclusive result of our proof
 \[
 \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2.
 \]
@@ -417,7 +465,6 @@ So, the two-step method outperforms the single-step method in terms of runtime. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 
 
 
