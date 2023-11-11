@@ -145,7 +145,7 @@ Despite its effectiveness, the computational time of LSI is very long. Papadimit
 In the last section, we will draw a conclusion and give a short summary of this seminar paper.
 
 \section{Related Work}
-Hofmann et. al analyze the LSI from a different probabilistic point of view comparing SVD to mixture decomposition using expectation maximization algorithm \cite{Relatedwork1}.
+Hofmann et al. analyze the LSI from a different probabilistic point of view comparing SVD to mixture decomposition using expectation maximization algorithm \cite{Relatedwork1}.
 Despite analyzing the LSI's good performance, Frieze et al. give another method to speed up LSI, introducing an approach that includes Fast-Monte-Carlo algorithms \cite{Relatedwork2}.
 
 
@@ -158,11 +158,11 @@ Despite analyzing the LSI's good performance, Frieze et al. give another method 
 %In this part we will explain the technique LSI, how it works, and its mathematical background (SVD).
 The corpus is defined as a set of documents. Each document is a vector of length $n$ from $\mathbb{R}^n$. Each position of the document describes a mathematical function in terms of $i$th term of the entire term space. The function can, for example, be the frequency of the $i$th term, or just 0-1 ($1$ if the term appears in the document, $0$ otherwise).
 
-Let $A \in \mathbb{R}^{n \times m}$ be a matrix of rank $r$. The Singular Value Decomposition (SVD) is a mathematical technique that represents the matrix as a product of three matrices.
+Let $A \in \mathbb{R}^{n \times m}$ be a matrix of rank $r$. The Singular Value Decomposition (SVD) is a mathematical technique that represents the matrix as a product of three matrices
 \[
-A = UDV^T.
+A = UDV^T = \sum_{i=1}^r \sigma_i u_i v_i^T  
 \]
-Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the matrix $AA^T$ (called singular values of $A$), then $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal \ref{eq:matrixA}. Every matrix can be represented in this form \cite{strang2005}.
+Where $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ are the eigenvalues of the matrix $AA^T$ (called singular values of $A$), $D = diag(\sigma_1,...,\sigma_r) \in \mathbb{R}^{r \times r}$. $U \in \mathbb{R}^{n \times r}$ is the matrix representing the eigenvectors of the matrix $AA^T$ and $V \in \mathbb{R}^{m \times r}$ the eigenvectors of the matrix $A^TA$. The columns of $U$ and $V$ are orthonormal \ref{eq:matrixA}. Every matrix can be represented in this form \cite{strang2005}.
 \begin{equation}
     A = 
 \Large
@@ -195,9 +195,9 @@ Let $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ be the eigenvalues of the mat
 
 
 
-In LSI the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document.
+Now the matrix $A \in \mathbb{R}^{n \times m}$ represents a term-document matrix of $n$ terms and $m$ documents. Each row of the matrix corresponds to a term and each column to a document. $U$ can be interpreted as "term-topic similarity" matrix, where each row represents how the given word is related to each of the $r$-topics. $V$ can be interpreted as "document-topic similarity" matrix, where each row represents how the given document relates to each $r$-topics. Each diagonal element of the matrix  $D$ shows the relevance of each topic ordered in decreasing order (from more relevant to less relevant).
 
-LSI keeps only $k$-largest singular values of the matrix considering only the first $k$ columns of matrices $U$ and $V$. I.e.
+Rank-$k$ LSI keeps only $k$-largest singular values of the matrix considering only the first $k$ columns of matrices $U$ and $V$($k$ defines the top $k$ most important topics/concepts of the term-document matrix). I.e.
 \[
 A_k = U_kD_kV_k^T
 \]
@@ -243,7 +243,7 @@ After introducing the previous three definitions, now we can define the probabil
 the universe of terms, $\mathscr{T}$ is a set of topics, and $\mathscr{S}$ is a set of styles, and $D$ a probability distribution on $\hat{\mathscr{T}} \times \hat{\mathscr{S}} \times \mathbb{Z}^+$, where by $\hat{\mathscr{T}}$ we denote the set of all convex combinations of topics in $\mathscr{T}$, by $\hat{\mathscr{S}}$ the set of all convex combinations of styles in $\mathscr{S}$, and by 
 $\mathbb{Z}^+$ the set of positive integers (the integers represent the lengths of documents).
 \end{definition}
-I.e. a corpus generated from the introduced corpus model is a set of documents in which every document is generated as follows: we sample a triple from $D$. It includes fixed $\hat{T} \in \mathscr{T}$, $\hat{S} \in \mathscr{S}$, and a fixed length $\ell$ of the document. Then we sample the terms of the document $\ell$ times according to $\hat{T}$.
+I.e. a corpus generated from the introduced corpus model is a set of documents in which every document is generated as follows: we sample a triple from $D$. It includes fixed $\hat{T} \in \mathscr{T}$, $\hat{S} \in \mathscr{S}$, and a fixed length $\ell$ of the document. Then we sample the terms of the document $\ell$ times according to $\hat{T}$ \cite{APAPADIMITRIOU2000217}.
 
 
 \section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
@@ -280,7 +280,7 @@ The following theorem shows that under some constraints on the corpus model the 
     Let $\mathscr{C}$ be a pure, $\epsilon$-seperable corpus model with $k$ topics such that the probability each topic assigns to each term is at most $\tau$, where $\tau > 0$ is a sufficiently small constant. Let $C$ be a corpus of $m$ documents generated from $\mathscr{C}$. Then, the rank-$k$ LSI is $O(\epsilon)$-skewed on $C$ with probability $1-O(m^{-1})$.
 \end{theorem}
 
-The proof of this theorem can be found in the original paper.
+The proof of this theorem can be found in the original paper \cite{APAPADIMITRIOU2000217}.
 
 
 
@@ -292,9 +292,8 @@ The proof of this theorem can be found in the original paper.
 In order to reduce the computational time we use dimensionality reduction and then apply LSI.
 According to Johnson and Lindenstrauss's lemma \cite{johnson1984Lindenstrauss}  random projection of a matrix to a lower dimensional space preserves pairwise distances of its element while representing each element in lower dimensional space. However, it does not bring semantically connected elements (i.e. documents together).  Papadimitriou et al. suggest a two-step LSI:
 \begin{enumerate}
-    \item  Apply a random projection to the initial corpus to $\ell$ dimensions, for some
-small $\ell > k$, to obtain, with high probability, a much smaller representation, which
-is still very close (in terms of distances and angles) to the original corpus.
+    \item 
+Apply a random projection onto $\ell$ dimensions, where $\ell$ is a small value greater than $k$, on the initial corpus. This process, with high probability, yields a significantly smaller representation that maintains close proximity to the original corpus in both distances and angles.
 
 
 \begin{equation}
@@ -306,17 +305,19 @@ is still very close (in terms of distances and angles) to the original corpus.
     r_1 & r_2 & \cdots & r_{\ell} \\
     \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
 \end{bmatrix}^T
+\cdot
+A
 %\small 
-\begin{bmatrix}
-    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
-    a_1 & a_2 & \cdots & a_m \\
-    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
-\end{bmatrix}
+%\begin{bmatrix}
+%    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+%    a_1 & a_2 & \cdots & a_m \\
+%    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+%\end{bmatrix}
 \label{eq:matrixB}
 \end{equation}
 
 \item Apply rank $O(k)$ LSI (because of the random projection, the number of
-singular values kept may have to be increased a little)
+singular values kept may have to be increased a little).
 \end{enumerate}
 
 Before diving into the main theorem of this chapter, let's cover some formal groundwork.
@@ -325,7 +326,7 @@ The SVD representations of A and B are denoted as follows:
 \[
 A = \sum_{i=1}^r \sigma_i u_i v_i^T \,\,\,\,\,\,\,\,\text{and}\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i^T.
 \]
-We also introduce the following lemma with its corollary.
+We also introduce two lemmas, a corollary and a theorem, which we use in our proof of the main theorem \ref{theorem:imp}.
 \begin{lemma}
 Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...t$
 \[
@@ -338,10 +339,7 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 \sum_{p=1}^{2k} \lambda_p^2 \geq (1-\epsilon) \lVert A_k \rVert_F^2.
 \]
 \end{corollary}
-\begin{theorem}
-    Parsevals identity \cite{hogben2013handbook}:
-    Let $B = {b_1,...,b_n}$ be an orthonormal basis for a space A. Then for each $a \in A$, $|a|^2 = \sum_{i=1}^n (ab_i)^2$.
-\end{theorem}
+
 \begin{lemma}
 \label{lem:A_Ak}
 \[
@@ -353,8 +351,13 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 \lVert A - A_k \rVert_F^2 = \lVert \sum_{i=k+1}^n \sigma_i u_i v_i^T \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2 
 \]
 The second equality holds since the squared Frobenius norm of every matrix can be written as sum of squares of its singular values \cite{FrobeniusDef}.
-    
 \end{proof}
+
+\begin{theorem}
+    Parsevals identity \cite{hogben2013handbook}:
+    Let ${b_1,...,b_n}$ be an orthonormal basis for a space $S$. Then for each $s \in S$, $|s|^2 = \sum_{i=1}^n (sb_i)^2$.
+\end{theorem}
+
 
 
 Our rank-$2k$ approximation of matrix $A$ is denoted as
@@ -362,12 +365,13 @@ Our rank-$2k$ approximation of matrix $A$ is denoted as
 B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T
 \]
 
-Now we can introduce the main theorem of this section.
+Now we can introduce the main theorem of this section:
 \begin{theorem}
 \label{theorem:imp}
 \[
     \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2
 \]
+where $\epsilon \in (0,0.5)$
 \end{theorem}
 Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
 
@@ -394,7 +398,7 @@ and for  $i = 2k+1,...,n$, because $b_j^Tb_i = 0$ we have
 \[
 (A - B_{2k})b_i = Ab_i.
 \]
-Hence
+Hence,
 
 \begin{align*}
     \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2 = \sum_{i=2k+1}^n |A b_i|^2 = \sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\
@@ -403,7 +407,7 @@ Hence
 
 On the other hand, we have
 \begin{align*}
- \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2  \overset{\text{Frob. prop. \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+ \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2  \overset{\text{Frob. form. \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
 \end{align*}
 
 Now we consider 
@@ -427,7 +431,7 @@ For the next step, we show
     = \sum_{i=1}^{2k} \dfrac{n}{\ell}\left| R^T (Ab_i)\right|^2
 \end{align*}
 %Random projection theorem
-Now from the Johnson-Lindenstrauss lemma \cite{johnson1984Lindenstrauss} for very large $\ell$ we have for each $i$
+Now from the Johnson-Lindenstrauss lemma \cite{johnson1984Lindenstrauss} for very large $\ell \in \Omega((\log n)/\epsilon^2)$ we have for each $i$
 \[
  \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
 \]
@@ -491,7 +495,7 @@ So, the two-step method outperforms the single-step method in terms of runtime. 
 
 
 \section{Summary and Conclusion} %Kes EJic 
-In our seminar paper, we gave the most relevant information of the scientific paper from Papadimitriou et al. introducing the theorem \ref{theorem: lsiperform} which shows the LSI's good performance assuming some assumptions on the given term-document matrix. These assumptions are sometimes not given in a real-world scenario. Hence the authors hope that this work will serve as a motivation for further work where these assumptions on the term-document matrix are not necessary.
+In our seminar paper, we gave the most relevant information of the scientific paper from Papadimitriou et al. \cite{APAPADIMITRIOU2000217} introducing the theorem \ref{theorem: lsiperform} which shows the LSI's good performance assuming some constraints on the given term-document matrix. These assumptions are sometimes not given in a real-world scenario. Hence the authors hope that this work will serve as a motivation for further work where these constraints on the term-document matrix are not given.
 
 Furthermore, we considered the LSI by random projection a two-step LSI which reduces the computational time. We showed the central theorem which argued that the two-step LSI is close to the single-step LSI with high probability \ref{theorem:imp} also giving a detailed proof of the theorem.
 
