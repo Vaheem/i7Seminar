@@ -1,0 +1,270 @@
+% This file provides an example Beamer presentation using the RWTH theme
+% showcasing some of the more common options, similar to the Powerpoint version
+% 12.11.2014: Revision 1 (Harold Bruintjes, Tim Lange)
+
+% For RWTH, beamer should be loaded with class option t (top)
+\documentclass[aspectratio=169]{beamer}
+\usepackage{lmodern}%
+% Use fontspec to get Arial font
+% Requires use of XeLaTeX
+%\usepackage{fontspec}
+%\setmainfont{Arial}
+%\setsansfont{Arial}
+% Also force Arial for math for a more consistent look
+%\usepackage{unicode-math}
+%\setmathfont{Arial}
+
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{MnSymbol}%
+\usepackage[utf8]{inputenc} % Allows inpit in utf8
+% German-style date formatting (footer)
+\usepackage[ddmmyyyy]{datetime}
+
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+
+\renewcommand{\dateseparator}{.}
+
+% Format the captions used for figures etc.
+\usepackage[compatibility=false]{caption}
+\captionsetup{singlelinecheck=off,justification=raggedleft,labelformat=empty,labelsep=none}
+
+% PGFPlots is used for drawing some of the charts
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\input{plot_commands.tex}
+
+% Load the actual RWTH theme. Suggested is to load the full theme,
+% as it requires some specific dimensions
+\usetheme{rwth}
+\graphicspath{{../figures/}}
+
+% Setup presentation information
+\author[First Author]{Vahe Eminyan}
+\institute[RWTH]{RWTH Aachen University}
+\title[]{Latent Semantic Indexing}
+%\title{Seminar “Theoretical Topics in Data Science”}
+
+
+% Set the logo to the file `logo`
+% It will be scaled automatically
+%\logo{\includegraphics{rwth_i5_en_rgb}}
+
+% Uncomment this if you want a TOC at every section start
+%\AtBeginSection{\frame{
+%    \frametitle{Content}
+%    \tableofcontents[currentsection]
+%}}
+
+% Use this to control some aspects of the footer
+%\setbeamertemplate{footertextextra}{}
+%\setbeamertemplate{footertext}{Example of an overridden footer}
+
+\begin{document}
+
+\setbeamercolor{title page bar}{fg=rwth}
+\setbeamertemplate{title page}[rwth]{}
+\begin{frame}[plain]
+\titlepage % Print the title page as the first slide
+\parbox{0cm}{
+  \vspace{-5em}
+  \begin{tabbing}
+      \=\textbf{Seminar “Theoretical Topics in Data Science”}
+  \end{tabbing}
+  \vspace{0em}
+  \begin{tabbing}
+  
+    \=\textbf{Vahe~Eminyan}\\
+    \=\Large{vahe.eminyan@rwth-aachen.de}\\
+    \=\Large{\today}\\[0.5em]
+  \end{tabbing}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{Introduction} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+%\subsection{Motivation}
+%Here should be 
+\begin{frame}{In this section}
+ \begin{itemize}
+    \item Motivation
+    \item What is LSI (rough idea)
+\end{itemize}   
+\end{frame}
+
+
+
+
+\section{LSI Background}
+\begin{frame}{In this section}
+ \begin{itemize}
+    \item SVD explanation
+    \item How does LSI work
+    
+\end{itemize}   
+\end{frame}
+
+\section{Original Paper Overview and Emphasized Aspect}
+\begin{frame}{In this section}
+\begin{itemize}
+    \item Two interesting questions Papadimitriou et al. investigated \cite{APAPADIMITRIOU2000217}
+    \begin{itemize}
+        \item Why does LSI perform well (why does it find the documents semantically related to each other)
+        \item How can we speed up the computation
+    \end{itemize}
+    \item We will focus on the second question
+\end{itemize}
+   
+\end{frame}
+
+
+%\section{Brief Mention of Analysis of LSI’s Good Performance}
+
+\section{LSI by Random Projection}
+\begin{frame}{In this section}
+ \begin{itemize}
+    \item In this section we will investigate the question "How we can speed up the computation": Informal formulation of the main theorem of this section (Theorem 5 original paper)
+    \item Introduction of theorems and lemmas that are necessary for the proof of the main theorem 
+    \item Introduction: the main theorem (Theorem 5 original paper)
+    \item Proof of the main theorem (Theorem 5 original paper)
+    \item Computational savings achieved by LSI by random projection
+\end{itemize}   
+\end{frame}
+
+
+\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+
+%
+%\begin{frame}
+%\frametitle{Paragraphs of Text}
+%Sed iaculis dapibus gravida. Morbi sed tortor erat, nec interdum arcu. Sed id lorem lectus. Quisque viverra augue id sem ornare non aliquam nibh tristique. Aenean in ligula nisl. Nulla sed tellus ipsum. Donec vestibulum ligula non lorem vulputate fermentum accumsan neque mollis.\\~\\
+
+%Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. Aliquam vel dui orci, a porta odio. Nullam id suscipit ipsum. Aenean lobortis commodo sem, ut commodo leo gravida vitae. Pellentesque vehicula ante iaculis arcu pretium rutrum eget sit amet purus. Integer ornare nulla quis neque ultrices lobortis. Vestibulum ultrices tincidunt libero, quis commodo erat ullamcorper id.
+%\end{frame}
+
+%------------------------------------------------
+%
+%\begin{frame}
+%\frametitle{Bullet Points}
+%\begin{itemize}
+%\item Lorem ipsum dolor sit amet, consectetur adipiscing elit
+%\item Aliquam blandit faucibus nisi, sit amet dapibus enim tempus eu
+%\item Nulla commodo, erat quis gravida posuere, elit lacus lobortis est, quis porttitor odio mauris at libero
+%\item Nam cursus est eget velit posuere pellentesque
+%\item Vestibulum faucibus velit a augue condimentum quis convallis nulla gravida
+%\end{itemize}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Blocks of Highlighted Text}
+%\begin{block}{Block 1}
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+%\end{block}
+
+%\begin{block}{Block 2}
+%Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
+%\end{block}
+
+%\begin{block}{Block 3}
+%Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
+%\end{block}
+%\end{frame}
+
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Multiple Columns}
+%\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+%\column{.45\textwidth} % Left column and width
+%\textbf{Heading}
+%\begin{enumerate}
+%\item Statement
+%\item Explanation
+%\item Example
+%\end{enumerate}
+
+%\column{.5\textwidth} % Right column and width
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+
+%\end{columns}
+%\end{frame}
+
+%------------------------------------------------
+%\section{Second Section}
+%------------------------------------------------
+
+%\begin{frame}
+%\frametitle{Table}
+%\begin{table}
+%\begin{tabular}{l l l}
+%\toprule
+%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+%\midrule
+%Treatment 1 & 0.0003262 & 0.562 \\
+%Treatment 2 & 0.0015681 & 0.910 \\
+%Treatment 3 & 0.0009271 & 0.296 \\
+%\bottomrule
+%\end{tabular}
+%\caption{Table caption}
+%\end{table}
+%\end{frame}
+
+%------------------------------------------------
+
+
+
+%------------------------------------------------
+
+%\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+%\frametitle{Verbatim}
+%\begin{example}[Theorem Slide Code]
+%\begin{verbatim}
+%\begin{frame}
+%\frametitle{Theorem}
+%\begin{theorem}[Mass--energy equivalence]
+%$E = mc^2$
+%\end{theorem}
+%\end{frame}\end{verbatim}
+%\end{example}
+%\end{frame}
+
+%------------------------------------------------
+
+
+
+%------------------------------------------------
+
+%------------------------------------------------
+
+\section{References}
+\begin{frame}[allowframebreaks]
+%\frametitle{References}
+\footnotesize{
+\bibliographystyle{plainurl}	
+\bibliography{bibligraphy.bib}
+}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\Huge{\centerline{The End}}
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document} 
