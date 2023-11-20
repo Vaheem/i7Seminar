@@ -169,19 +169,157 @@ $
 
 
 \section{LSI Background}
-\begin{frame}{In this section}
 
+\begin{frame}{Singular Value Decomposition (SVD) \cite{strang2005}}
+\begin{itemize}
+    \item Any $n$ by $m$ matrix can be factored into
+    \[
+        A_{ n \times m} = U_{[n \times r]}D_{[r \times r]}(V_{[m \times r]})^T = \text{ (orthogonal)(diagonal)(orthogonal).}
+    \]
+    \item $U$: \color{Mahogany}left singular vectors \color{black} ($n$ terms and $r$ topics)
+    \item $V$: \color{Mahogany} right singular vectors \color{black} ($m$ documents and $r$ topics)
+    \item $D$: \color{Mahogany} Singular values \color{black} $\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r$ in decreasing order
+    ($r \times r$ diagonal matrix representing the "importance" of each topic, where $r$ rank of matrix $A$)
+    \item Vector notation $$A = UDV^T = \sum_{i=1}^r \sigma_i u_i v_i^t$$
+\end{itemize}
 
- \begin{itemize}
-    \item SVD explanation
-    \item How does LSI work
     
-\end{itemize}   
 \end{frame}
 
-\begin{frame}{Singular Value Decomposition (SVD)}
-    
+\begin{frame}{Singular Value Decomposition (SVD) Example: Matrix $A$ with rank $r=3$}
+\[
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Documents }  \\
+\text{\color{Mahogany}Terms } & \begin{pmatrix}
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+0 & 1 & 0 \\
+0 & 1 & 1 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$A$}
+\end{array}
+=
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Term-Topic similarity }  \\
+ & \begin{pmatrix}
+-0.48 & -0.79 & -0.11\cdot10^{-14} \\
+-0.58 & 0.16 & 0.71  \\
+\textbf{-0.34} & \textbf{0.56} & 0.42\cdot10^{-15}  \\
+-0.56 & 0.16 & -0.71  \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$U$}
+\end{array}
+\times
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Topic "importance" }  \\
+ & \begin{pmatrix}
+2.1 & 0 & 0 \\
+0 & 1.26 & 0 \\
+0 & 0 & 1 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$D$}\\
+\end{array}
+
+\hspace{15cm}
+\times
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Topic-Document similarity }  \\
+& \begin{pmatrix}
+-0.5 & \textbf{-0.71} & -0.5 \\
+-0.5 & \textbf{0.71} & -0.5 \\
+0.71 & 0.67 \cdot 10^{-15} & -0.711 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$V^T$}
+\end{array}
+\]
 \end{frame}
+
+
+\begin{frame}{Latent Semantic Indexing based on SVD}
+\begin{itemize}
+    \item LSI considers $A_k$ the rank $k$ approximation of $A$ (I.e. keep only $k$ most relevant topics)
+    \item In the example $k=2$
+    \item Map a query to $k$ dimensional space with $U_k$ and then apply cosine similarity to find similar documents in $D_kV_k^T$
+\end{itemize}
+
+
+\[
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Documents }  \\
+\text{\color{Mahogany}Terms } & \begin{pmatrix}
+1.0 & 0.01 & 1 \\
+0.51 & 1.01 & 0.51 \\
+0.0 & 1.01 & 0.0 \\
+0.49 & 0.98 & 0.49 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$A_k$}
+\end{array}
+=
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Term-Topic similarity }  \\
+ & \begin{pmatrix}
+-0.48 & -0.79  \\
+-0.58 & 0.16  \\
+\textbf{-0.34} & \textbf{0.56}   \\
+-0.56 & 0.16  \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$U_k$}
+\end{array}
+\times
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Topic "importance" }  \\
+ & \begin{pmatrix}
+2.1 & 0  \\
+0 & 1.26  \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$D_k$}\\
+\end{array}
+\times
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Topic-Document similarity }  \\
+& \begin{pmatrix}
+-0.5 & \textbf{-0.71} & -0.5 \\
+-0.5 & \textbf{0.71} & -0.5 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$V_k^T$}
+\end{array}
+\]
+\end{frame}
+
+
+\begin{frame}{Latent Semantic Indexing based on SVD}
+\begin{theorem} [Eckart and Young \cite{EckartYoung} ]
+	Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$, where $F$ denotes the Frobenius norm of a matrix.
+\end{theorem}
+
+
+\[
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Documents }  \\
+\text{\color{Mahogany}Terms } & \begin{pmatrix}
+1.0 & 0.01 & 1 \\
+0.51 & 1.01 & 0.51 \\
+0.0 & 1.01 & 0.0 \\
+0.49 & 0.98 & 0.49 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$A_k$}
+\end{array}
+\approx
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}Documents }  \\
+\text{\color{Mahogany}Terms } & \begin{pmatrix}
+1 & 0 & 1 \\
+1 & 1 & 0 \\
+0 & 1 & 0 \\
+0 & 1 & 1 \\
+\end{pmatrix} \\
+& \text{\color{Mahogany}$A$}
+\end{array}
+\]
+\end{frame}
+
+
+
 
 \section{Original Paper Overview and Emphasized Aspect}
 \begin{frame}{In this section}
