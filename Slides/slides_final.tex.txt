@@ -322,14 +322,21 @@ $
 
 
 \section{Original Paper Overview and Emphasized Aspect}
+
 \begin{frame}{In this section}
 \begin{itemize}
-    \item Two interesting questions Papadimitriou et al. investigated \cite{APAPADIMITRIOU2000217}
+    \item LSI has shown strong empirical results
+    \item Two important aspects
     \begin{itemize}
-        \item Why does LSI perform well (why does it find the documents semantically related to each other)
-        \item How can we speed up the computation
+        \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
+        \item How can we \color{Mahogany} reduce the computational time \color{black}?
     \end{itemize}
-    \item We will focus on the second question
+    \item Papadimitriou et al. \cite{APAPADIMITRIOU2000217} investigated both aspects showing:
+    \begin{enumerate}
+        \item Under certain constraints on the term-document matrix, semantically related documents are mapped to \color{Mahogany} similar vectors \color{black}
+        \item Instead of LSI use \color{Mahogany} LSI by random projection. \color{black} Map the original term-document matrix into a lower dimensional space, then use LSI on the lower dimensional matrix
+    \end{enumerate}
+    \item In this presentation we focus on the \color{Mahogany} second \color{black} aspect
 \end{itemize}
    
 \end{frame}
@@ -338,7 +345,7 @@ $
 %\section{Brief Mention of Analysis of LSI’s Good Performance}
 
 \section{LSI by Random Projection}
-\begin{frame}{In this section}
+\begin{frame}{}
  \begin{itemize}
     \item In this section we will investigate the question "How we can speed up the computation": Informal formulation of the main theorem of this section (Theorem 5 original paper)
     \item Introduction of theorems and lemmas that are necessary for the proof of the main theorem 
