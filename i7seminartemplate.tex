@@ -106,8 +106,7 @@ This seminar paper gives an analysis of the work of  Papadimitriou et al. "Laten
 Latent semantic indexing (LSI) is one of the techniques used for information retrieval.
 LSI uses a mathematical technique called Singular Value Decomposition (SVD) applied to the term-document matrix. It is used to discover the hidden (latent) structure in the text data.
 
-LSI is widely used in practice and has shown strong empirical results \cite{LSIusage1, LSIusage2, LSIusage3}. However, due to the large size of term-document matrices, the computation can be slow.
-These lead to two interesting questions: why does LSI perform so well, and how can we speed up computations?
+LSI is widely used in practice and has shown strong empirical results \cite{LSIusage1, LSIusage2, LSIusage3}. However, due to the large size of term-document matrices, the computation can be slow. This raises two interesting questions: why does LSI perform so well, and how can we speed up computations?
 Papadimitriou et al. address both of these questions.
 They provide a theoretical justification for LSI's effectiveness, considering a special type of term-document matrix.
 
@@ -132,21 +131,22 @@ In this seminar paper, we delve into both aforementioned aspects, with a specifi
 \section{Introduction} %KES Ej
 %In this section, we will introduce the topic and explain how the paper is structured.
 %My plan is to cover all sections focusing on section 5.
-Retrieving information from given data has been an important aspect for a long time.
-Due to the development of information systems and the Internet, huge amounts of data are available. 
+Retrieving information from given data is an important aspect.
+Due to the development of information systems and the digital landscape, huge amounts of data are available. 
 Handling these huge amounts of data is a great challenge, so many techniques have been developed to cope with the work process. 
-Consider a scenario where we have a dataset comprising millions of documents structured as a term-document matrix and a user submits a query. Instead of just finding the documents that include the words of the query, the goal is to find documents that align with the query semantically. This semantic understanding ensures more accurate and relevant search results, even in extensive datasets.
-Latent Semantic Indexing (LSI) is one of the information retrieval techniques. It uses Singular Value Decomposition (SVD) to represent the term-document matrix as a product of three matrices. By representing the term-document matrix in such a way we want to find the underlying (latent, hidden) semantical topics (also called concepts) of the term-document matrix. With the help of such decomposition, we can map the documents and queries to a lower dimensional space and compare them not only syntactically but also semantically. (Section 2 provides more detailed information about LSI and SVD).
+Consider a scenario where we have a dataset comprising millions of documents structured as a term-document matrix and a user submits a query. Instead of just finding the documents that include the words of the query, the goal is to find documents that align with the query semantically. Another example is to build a recommendation system form a movie-user matrix.  %Another example is given a user-movie matrix, we aim to create a recommendation system.
+This semantic understanding ensures more accurate and relevant search results, even in extensive datasets.
+Latent Semantic Indexing (LSI) is one of the information retrieval techniques. It uses Singular Value Decomposition (SVD) to represent the term-document matrix as a product of three matrices. By representing the term-document matrix in such a way we want to find the underlying (latent, hidden) semantical topics (also called concepts) of the term-document matrix. With the help of such decomposition, we can map the documents and queries to a lower dimensional space and compare them not only syntactically but also semantically. (\cref{LSI Background} provides more detailed information about LSI and SVD).
 
-LSI has shown strong empirical results. However, prior to the paper of Papadimitriou et al., there was no satisfactory explanation for its success (Why does LSI find the documents corresponding to the semantics of the query with high accuracy). They prove a theorem that under certain constraints LSI will always find the correct topic of the given query with high probability. Section 4 of this seminar paper elaborates on this theorem.
+LSI has shown strong empirical results. However, prior to the paper of Papadimitriou et al., there was no satisfactory explanation for its success. The question is: Why does LSI find the documents corresponding to the semantics of the query with high accuracy. They prove a theorem that under certain constraints LSI will always find the correct topic of the given query with high probability. \cref{Brief Mention of Analysis of LSI's Good Performance} of this seminar paper elaborates on this theorem.
 
-Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability. Section 5 provides a detailed analysis of LSI by random projection and presents the proof for this statement.
+Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability.  \cref{LSI by Random Projection} provides a detailed analysis of LSI by random projection and presents the proof for this statement.
 
 In the last section, we will draw a conclusion and give a short summary of this seminar paper.
 
 \section{Related Work}
 Hofmann et al. analyze the LSI from a different probabilistic point of view comparing SVD to mixture decomposition using expectation maximization algorithm \cite{Relatedwork1}.
-Despite analyzing the LSI's good performance, Frieze et al. give another method to speed up LSI, introducing an approach that includes Fast-Monte-Carlo algorithms \cite{Relatedwork2}.
+Despite analyzing the LSI's good performance, Frieze et al. give another method to speed up LSI, introducing an approach that includes Fast-Monte-Carlo algorithms \cite{Relatedwork2}. More LSI insights can be found in \cite{SVDNEW1, SVDNEW2, SVDNEW3}.
 
 
 
@@ -154,7 +154,7 @@ Despite analyzing the LSI's good performance, Frieze et al. give another method 
 
  
 
-\section{LSI Background} %MI EJ
+\section{LSI Background} \label{LSI Background} %MI EJ
 %In this part we will explain the technique LSI, how it works, and its mathematical background (SVD).
 The corpus is defined as a set of documents. Each document is a vector of length $n$ from $\mathbb{R}^n$. Each position of the document describes a mathematical function in terms of $i$th term of the entire term space. The function can, for example, be the frequency of the $i$th term, or just 0-1 ($1$ if the term appears in the document, $0$ otherwise).
 
@@ -166,24 +166,24 @@ Where $\sigma_1 \geq \sigma_2 \geq ...\geq \sigma_r$ are the eigenvalues of the 
 \begin{equation}
     A = 
 \Large
-\begin{bmatrix}
+\begin{pmatrix}
     \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
     u_1 & u_2 & \cdots & u_r \\
     \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
-\end{bmatrix}
+\end{pmatrix}
 \normalsize
-\begin{bmatrix}
+\begin{pmatrix}
     \sigma_1 & 0 & \cdots & 0 \\
     0 & \sigma_2 & \cdots & 0 \\
     \vdots & \vdots & \ddots & \vdots \\
     0 & 0 & \cdots & \sigma_r
-\end{bmatrix}
+\end{pmatrix}
 %\small 
-\begin{bmatrix}
+\begin{pmatrix}
     \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
     v_1 & v_2 & \cdots & v_r \\
     \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
-\end{bmatrix}^T
+\end{pmatrix}^T
 \label{eq:matrixA}
 \end{equation}
 
@@ -246,10 +246,10 @@ $\mathbb{Z}^+$ the set of positive integers (the integers represent the lengths 
 I.e. a corpus generated from the introduced corpus model is a set of documents in which every document is generated as follows: we sample a triple from $D$. It includes fixed $\hat{T} \in \mathscr{T}$, $\hat{S} \in \mathscr{S}$, and a fixed length $\ell$ of the document. Then we sample the terms of the document $\ell$ times according to $\hat{T}$ \cite{APAPADIMITRIOU2000217}.
 
 
-\section{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
+\section{Brief Mention of Analysis of LSI's Good Performance} \label{Brief Mention of Analysis of LSI's Good Performance} %KEs Eji see greek paper
 %In this part, I will provide the most significant information of paragraph 4 of the original paper. \\
 %Main idea: Under certain conditions and assumptions, it can be shown why LSI performs well.
-In this section, we provide theorem that states under certain conditions the LSI brings similar documents together.
+In this section, we introduce the theorem that states under certain conditions the LSI brings similar documents together.
 First, we need a set of definitions for a corpus model.
 \begin{definition}
   A corpus model $\mathscr{C}$ is pure if each document involves a single topic.
@@ -288,7 +288,7 @@ The proof of this theorem can be found in the original paper \cite{APAPADIMITRIO
 
 
 
-\section{LSI by Random Projection} %Ereq EJ
+\section{LSI by Random Projection} \label{LSI by Random Projection} %Ereq EJ
 In order to reduce the computational time we use dimensionality reduction and then apply LSI.
 According to Johnson and Lindenstrauss's lemma \cite{johnson1984Lindenstrauss}  random projection of a matrix to a lower dimensional space preserves pairwise distances of its element while representing each element in lower dimensional space. However, it does not bring semantically connected elements (i.e. documents together).  Papadimitriou et al. suggest a two-step LSI:
 \begin{enumerate}
@@ -300,19 +300,19 @@ Apply a random projection onto $\ell$ dimensions, where $\ell$ is a small value 
     B = 
 \sqrt{\dfrac{n}{l}}
 \cdot
-\begin{bmatrix}
+\begin{pmatrix}
     \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
     r_1 & r_2 & \cdots & r_{\ell} \\
     \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
-\end{bmatrix}^T
+\end{pmatrix}^T
 \cdot
 A
 %\small 
-%\begin{bmatrix}
+%\begin{pmatrix}
 %    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
 %    a_1 & a_2 & \cdots & a_m \\
 %    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
-%\end{bmatrix}
+%\end{pmatrix}
 \label{eq:matrixB}
 \end{equation}
 
@@ -401,13 +401,12 @@ and for  $i = 2k+1,...,n$, because $b_j^Tb_i = 0$ we have
 Hence,
 
 \begin{align*}
-    \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2 = \sum_{i=2k+1}^n |A b_i|^2 = \sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\
-    &\overset{\text{Parseval's id.}}{=} \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2 
+    \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2 = \sum_{i=2k+1}^n |A b_i|^2 = \sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2 \overset{\text{Parseval's id.}}{=} \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2 
 \end{align*}
 
 On the other hand, we have
 \begin{align*}
- \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2  \overset{\text{Frob. form. \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+ \lVert A - A_k \rVert_F^2 &\overset{\text{ \cref{lem:A_Ak}}}{=} \sum_{i=k+1}^n \sigma_i^2  \overset{\text{Frob. norm \cite{FrobeniusDef}}}{=}  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
 \end{align*}
 
 Now we consider 
@@ -455,7 +454,7 @@ I.e.
 
 Now we substitute this result in equation \ref{eq:A} getting
 \begin{align*}
-    \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2\\
+    \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2 
 \iff \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
 \end{align*}
 
@@ -497,7 +496,7 @@ So, the two-step method outperforms the single-step method in terms of runtime. 
 \section{Summary and Conclusion} %Kes EJic 
 In our seminar paper, we gave the most relevant information of the scientific paper from Papadimitriou et al. \cite{APAPADIMITRIOU2000217} introducing the theorem \ref{theorem: lsiperform} which shows the LSI's good performance assuming some constraints on the given term-document matrix. These assumptions are sometimes not given in a real-world scenario. Hence the authors hope that this work will serve as a motivation for further work where these constraints on the term-document matrix are not given.
 
-Furthermore, we considered the LSI by random projection a two-step LSI which reduces the computational time. We showed the central theorem which argued that the two-step LSI is close to the single-step LSI with high probability \ref{theorem:imp} also giving a detailed proof of the theorem.
+Furthermore, we considered the LSI by random projection a two-step LSI which reduces the computational time. We showed the central theorem \ref{theorem:imp} which argued that the two-step LSI is close to the single-step LSI with high probability also giving a detailed proof of the theorem.
 
 
 
