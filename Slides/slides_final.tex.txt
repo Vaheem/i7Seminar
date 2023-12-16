@@ -323,7 +323,7 @@ $
 
 \section{Original Paper Overview and Emphasized Aspect}
 
-\begin{frame}{In this section}
+\begin{frame}{}
 \begin{itemize}
     \item LSI has shown strong empirical results
     \item Two important aspects
@@ -331,10 +331,15 @@ $
         \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
         \item How can we \color{Mahogany} reduce the computational time \color{black}?
     \end{itemize}
-    \item Papadimitriou et al. \cite{APAPADIMITRIOU2000217} investigated both aspects showing:
+    \item Papadimitriou et al. \cite{APAPADIMITRIOU2000217} investigated both aspects:
     \begin{enumerate}
         \item Under certain constraints on the term-document matrix, semantically related documents are mapped to \color{Mahogany} similar vectors \color{black}
-        \item Instead of LSI use \color{Mahogany} LSI by random projection. \color{black} Map the original term-document matrix into a lower dimensional space, then use LSI on the lower dimensional matrix
+        \item Instead of LSI use \color{Mahogany} LSI by random projection.\color{black}  This reduces the computational time: 
+        \begin{itemize}
+            \item Map the original term-document matrix into a lower dimensional space
+            \item Use LSI on the lower dimensional matrix
+        \end{itemize}
+        
     \end{enumerate}
     \item In this presentation we focus on the \color{Mahogany} second \color{black} aspect
 \end{itemize}
@@ -354,6 +359,57 @@ $
     \item Computational savings achieved by LSI by random projection
 \end{itemize}   
 \end{frame}
+
+
+\begin{frame}{Random Projection for Dimensionality Reduction}
+Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to represent the matrix $A$ in lower dimensional space by preserving pairwise distances between any two points:
+$$B = \sqrt{\frac{n}{\ell}} \cdot R^T A \in \mathbb{R}^{\ell \times m}$$
+
+\begin{lemma}[Johnson and Lindenstrauss \cite{johnson1984Lindenstrauss} ]
+Let $v \in  \mathbb{R}^{n}$ be a unit vector, let $H$ be a random $\ell$-dimensional subspace through the origin, and let the random variable $X$ denote the square of the length of the projection of $v$ onto $H$. Suppose $0 <\epsilon < 0.5$, and $24 \log n < 1 < \sqrt{n}$. Then, $E[X] = \frac{\ell}{n}$, and
+$$Pr(|X -  \frac{\ell}{n}| > \epsilon \frac{\ell}{n}) < 2 \sqrt{\ell} e ^{-(\ell - 1) \epsilon^2 / 4 }$$
+\end{lemma}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Two Step LSI}
+\begin{enumerate}
+    \item Apply a random projection onto $\ell$ dimensions, where $\ell$ is a small value greater than $k$, on $A$.
+
+\begin{align*}
+    B = 
+\sqrt{\dfrac{n}{\ell}}
+\cdot
+\begin{pmatrix}
+    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+    r_1 & r_2 & \cdots & r_{\ell} \\
+    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+\end{pmatrix}^T
+\cdot
+A
+%\small 
+%\begin{pmatrix}
+%    \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+%    a_1 & a_2 & \cdots & a_m \\
+%    \phantom{-} \vert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
+%\end{pmatrix}
+\label{eq:matrixB}
+\end{align*}
+    
+    \item  Apply rank $O(k)$ LSI (because of the random projection, the number of
+singular values kept may have to be slightly increased).
+\end{enumerate}
+\vspace{1cm}
+This leads to an improved running time while preventing the expressiveness of the original matrix.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Background}
+    
+\end{frame}
+
 
 
 %\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
