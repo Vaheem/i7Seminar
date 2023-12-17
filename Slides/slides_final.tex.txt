@@ -362,7 +362,7 @@ $
 
 
 \begin{frame}{Random Projection for Dimensionality Reduction}
-Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to represent the matrix $A$ in lower dimensional space by preserving pairwise distances between any two points:
+Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to \color{Mahogany} reduce the dimensionality \color{black} of matrix $A$ by preserving pairwise distances between any two points:
 $$B = \sqrt{\frac{n}{\ell}} \cdot R^T A \in \mathbb{R}^{\ell \times m}$$
 
 \begin{lemma}[Johnson and Lindenstrauss \cite{johnson1984Lindenstrauss} ]
@@ -376,7 +376,7 @@ $$Pr(|X -  \frac{\ell}{n}| > \epsilon \frac{\ell}{n}) < 2 \sqrt{\ell} e ^{-(\ell
 
 \begin{frame}{Two Step LSI}
 \begin{enumerate}
-    \item Apply a random projection onto $\ell$ dimensions, where $\ell$ is a small value greater than $k$, on $A$.
+    \item Apply a \color{Mahogany} random projection \color{black} onto $\ell$ dimensions, where $\ell$ is a small value greater than $k$, on $A$.
 
 \begin{align*}
     B = 
@@ -398,23 +398,27 @@ A
 \label{eq:matrixB}
 \end{align*}
     
-    \item  Apply rank $O(k)$ LSI (because of the random projection, the number of
+    \item  Apply \color{Mahogany} rank $O(k)$ LSI \color{black} (because of the random projection, the number of
 singular values kept may have to be slightly increased).
 \end{enumerate}
 \vspace{1cm}
-This leads to an improved running time while preventing the expressiveness of the original matrix.
+Later we will show the theorem STEXXXX. Informally the \color{Mahogany} theorem states\color{black}:
+\begin{itemize}
+    \item original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI 
+    \item improved running time
+\end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Background}
+\begin{frame}{Background and Notation for the Proof}
 Vector notations of SVD:
 $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^{\ell} \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.$$
-
+\vspace{1cm}
 \begin{itemize}
-    \item $A$: original term-document matrix
-    \item $A_k$: rank $k$ approximation of $A$
-    \item $B$: matrix after randomly projecting and scaling $A$
-    \item $B_{2k}$: rank $2k$ approximation of $A$
+    \item $A$: \color{Mahogany} original \color{black} term-document matrix
+    \item $A_k$: \color{Mahogany} rank $k$ approximation \color{black} of $A$
+    \item $B$: matrix after \color{Mahogany} randomly projecting \color{black} and \color{Mahogany} scaling \color{black} $A$
+    \item $B_{2k}$: \color{Mahogany} rank $2k$ approximation \color{black} of $A$
 \end{itemize}
 
 
@@ -422,7 +426,7 @@ $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \
 \end{frame}
 
 
-\begin{frame}{Frame Title}
+\begin{frame}{Background and Notation for the Proof}
 \begin{lemma}
 Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...t$
 \[
@@ -440,7 +444,7 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 
 
 
-\begin{frame}{Frame Title}
+\begin{frame}{Background and Notation for the Proof}
     \begin{lemma}
 \label{lem:A_Ak}
 \[
@@ -462,8 +466,9 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 
 
 
-\begin{frame}{Frame Title}
-    Now we can introduce the main theorem of this section:
+\begin{frame}{Main Theorem}
+    %Now we can introduce the main theorem of this section:
+\vspace{-1cm}
 \begin{theorem}
 \label{theorem:imp}
 \[
@@ -471,15 +476,22 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 \]
 where $\epsilon \in (0,0.5)$
 \end{theorem}
-Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
+\vspace{1cm}
+Informally, the theorem states that the original matrix $A$ after applying \color{Mahogany} random projection  \color{black}  and then  \color{Mahogany} LSI  \color{black} is almost as good  \color{Mahogany} recovered  \color{black} as by using  \color{Mahogany} one-step LSI  \color{black} on the original matrix.
 \end{frame}
 
 
 \begin{frame}{Proof}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
+  
     We have 
     $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^{\ell} \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.$$
-$b_1,...,b_n$ Are orthonormal vectors spanning the row space of $A$ and $B_{2k}$.\\
-Hence using the Parseval's identity we can write:
+$b_1,...,b_n$ Are orthonormal vectors  \color{Mahogany} spanning  \color{black} the  \color{Mahogany} row space  \color{black} of $A$ and $B_{2k}$.\\
+Hence using  \color{Mahogany} the Parseval's  \color{black} identity we can write:
 \begin{align}
    \lVert A - B_{2k} \rVert_F^2 = \sum_{i=1}^n |(A - B_{2k})b_i|^2. 
 \end{align}
@@ -487,19 +499,27 @@ Hence using the Parseval's identity we can write:
 
 
 
-For $i = 1,...,2k$, because $b_i^T b_i = 1$ we have
+For $i = 1,...,2k$, because  \color{Mahogany} $b_i^T b_i = 1$  \color{black}, we have
 \begin{align}
  (A - B_{2k})b_i = Ab_i - Ab_i = 0,   
 \end{align}
 
-and for  $i = 2k+1,...,n$, because $b_j^Tb_i = 0$ we have
+and for  $i = 2k+1,...,n$, because  \color{Mahogany} $b_j^Tb_i = 0$  \color{black}, we have
 \begin{align}
 (A - B_{2k})b_i = Ab_i.
 \end{align}
 
 \end{frame}
 
-\begin{frame}{Proof (continuation)}
+\begin{frame}{Proof (continued)}
+
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
+
+
 Now we continue from the equation
     \begin{align}
     \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2\\ 
@@ -511,7 +531,13 @@ Now we continue from the equation
 
 
 
-\begin{frame}{Proof (continuation)}
+\begin{frame}{Proof (continued)}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
+  
 On the other hand, we have
 \begin{align}
     \lVert A - A_k \rVert_F^2 
@@ -520,7 +546,13 @@ On the other hand, we have
 \end{frame}
 
 
-\begin{frame}{Proof (continuation)}
+\begin{frame}{Proof (continued)}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
+  
     Now we consider 
 \begin{align}
    \lVert A - B_{2k} \rVert_F^2 - \lVert A - A_k \rVert_F^2 
@@ -535,7 +567,13 @@ that is equivalent to
 
 
 
-\begin{frame}{Proof (continuation)}
+\begin{frame}{Proof (continued)}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
+
     For the next step, we show
 \begin{align}
 (1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
@@ -549,12 +587,18 @@ We write
 \end{frame}
 
 
-\begin{frame}{Proof (continuation)}
-    Now from the Johnson-Lindenstrauss lemma \cite{johnson1984Lindenstrauss} for very large $\ell \in \Omega((\log n)/\epsilon^2)$ we have for each $i$
+\begin{frame}{Proof (continued)}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
+
+    Now from the  \color{Mahogany} Johnson-Lindenstrauss lemma  \color{black} \cite{johnson1984Lindenstrauss} for very large $\ell \in \Omega((\log n)/\epsilon^2)$ we have for each $i$
 \begin{align}
  \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
 \end{align}
-with high probability.
+with  \color{Mahogany} high probability \color{black}.
 
 Hence with a high probability
 \begin{align}
@@ -563,7 +607,12 @@ Hence with a high probability
 \end{frame}
 
 
-\begin{frame}{Proof (continuation)}
+\begin{frame}{Proof (continued)}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
     Now we have
 \begin{align}
     \sum_{i=1}^{2k} |A b_i|^2 &\geq \dfrac{1}{(1+\epsilon)} \sum_{i=1}^{2k} \lambda_i^2 \\
@@ -577,19 +626,24 @@ I.e.
 \end{frame}
 
 
-\begin{frame}{Proof (continuation)}
+\begin{frame}{Proof (continued)}
+\begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
+      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+    };
+  \end{tikzpicture}%
 Remember the Equation \eqref{eq:A}:
 \begin{align}
     \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)  %\label{eq:A} 
 \end{align}
-    Now we substitute the result of Equation \eqref{eq:22} in equation \eqref{eq:A}:
+    Now we   \color{Mahogany} substitute  \color{black} the result of Equation \eqref{eq:22} in equation \eqref{eq:A}:
 \begin{align}
     &\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2 \\
 \iff &\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
 \end{align}
 
 
-Due to the formulation of Frobenius norm as in Lemma \ref{lem:A_Ak}, %\cite{FrobeniusDef}
+Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in Lemma \ref{lem:A_Ak}, %\cite{FrobeniusDef}
  we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. \\
  Hence
 \begin{align}
@@ -599,36 +653,39 @@ Due to the formulation of Frobenius norm as in Lemma \ref{lem:A_Ak}, %\cite{Frob
 \end{frame}
 
 
-\begin{frame}{Computational time}
+\begin{frame}{Comparison of Computational Time}
 Given the term-document matrix $A \in \mathbb{R}^{n\times m}$.\\
-Runtime of standard LSI:
+\vspace{1cm}
+Runtime of \color{Mahogany} one-step \color{black} LSI:
 \begin{itemize}
-    \item LSI computation: $O(mnc)$ if $A$ is sparse with about $c$
+    \item LSI computation: \color{Mahogany} $O(mnc)$ \color{black} if $A$ is sparse with about $c$
 nonzero entries per column
 \end{itemize}
-Runtime of LSI by random projection:
+\vspace{1cm}
+Runtime of LSI by \color{Mahogany} random projection \color{black}:
 \begin{itemize}
     \item Random projection to $\ell$ dimensions: $O(mc\ell)$ 
     \item LSI computation: $O(m\ell^2)$
     \item Total time: $O(mc\ell + m\ell^2) = O(m(c\ell + \ell^2))$, with $\ell \in O(\frac{\log n}{\epsilon^2})$
-    \item Hence we get a total runtime: $O(m(\log^2 n + c \log n))$
+    \item Hence we get a total runtime: \color{Mahogany} $O(m(\log^2 n + c \log n))$ \color{black}
 \end{itemize}
-$O(m(\log^2 n + c \log n))$ is asymptotically superior compared to $O(mnc)$
+\vspace{1cm}
+$O(m(\log^2 n + c \log n))$ is \color{Mahogany} asymptotically superior \color{black} compared to $O(mnc)$
     
 \end{frame}
 
 
-
+\section{Summary and Conclusion}
 \begin{frame}{Summary and Conclusion}
     \begin{itemize}
-        \item Latent semantic analysis as SVD base technique for information retrieval
+        \item Latent semantic analysis: SVD based technique for information retrieval
         \item Papadimitriou et al. analysed two important aspects \cite{APAPADIMITRIOU2000217}
             \begin{itemize}
             \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
             \item How can we \color{Mahogany} reduce the computational time \color{black}? (Our main focus)
            \end{itemize}
-           \item LSI by random projection leads to a reduction of computation time, while preventing the expressiveness of the original matrix.
-           \item Conclusion: SVD-based methods are powerful techniques to solve different types of problems. Newer techniques based on neural networks or graph neural networks
+           \item LSI by random projection leads to a \color{Mahogany} reduction of computation time \color{black}, while preventing the \color{Mahogany} expressiveness \color{black} of the original matrix. (Theorem STEXXX)
+           \item There are newer techniques based on \color{Mahogany} neural networks 
     \end{itemize}
 \end{frame}
 
