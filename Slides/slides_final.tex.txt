@@ -407,10 +407,230 @@ This leads to an improved running time while preventing the expressiveness of th
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Background}
+Vector notations of SVD:
+$$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^{\ell} \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.$$
+
+\begin{itemize}
+    \item $A$: original term-document matrix
+    \item $A_k$: rank $k$ approximation of $A$
+    \item $B$: matrix after randomly projecting and scaling $A$
+    \item $B_{2k}$: rank $2k$ approximation of $A$
+\end{itemize}
+
+
+
+\end{frame}
+
+
+\begin{frame}{Frame Title}
+\begin{lemma}
+Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...t$
+\[
+\lambda_p^2 \geq \dfrac{1}{k} \left[(1-\epsilon) \sum_{i=1}^k \sigma_i^2 - \sum_{j=1}^{p-1} \lambda_j^2\right].
+\]
+\end{lemma}
+\begin{corollary}
+\label{cor:10}
+\[
+\sum_{p=1}^{2k} \lambda_p^2 \geq (1-\epsilon) \lVert A_k \rVert_F^2.
+\]
+\end{corollary}
     
 \end{frame}
 
 
+
+\begin{frame}{Frame Title}
+    \begin{lemma}
+\label{lem:A_Ak}
+\[
+\lVert A - A_k \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2. 
+\]
+\end{lemma} 
+%\begin{proof}
+%\[
+%\lVert A - A_k \rVert_F^2 = \lVert \sum_{i=k+1}^n \sigma_i u_i v_i^T \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2 
+%\]
+%The second equality holds since the squared Frobenius norm of every matrix can be written as sum of squares of its singular values \cite{FrobeniusDef}.
+%\end{proof}
+
+\begin{theorem}
+    [Parsevals identity \cite{hogben2013handbook}]
+    Let ${b_1,...,b_n}$ be an orthonormal basis for a space $S$. Then for each $s \in S$, $|s|^2 = \sum_{i=1}^n (sb_i)^2$.
+\end{theorem}
+\end{frame}
+
+
+
+\begin{frame}{Frame Title}
+    Now we can introduce the main theorem of this section:
+\begin{theorem}
+\label{theorem:imp}
+\[
+    \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2
+\]
+where $\epsilon \in (0,0.5)$
+\end{theorem}
+Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
+\end{frame}
+
+
+\begin{frame}{Proof}
+    We have 
+    $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^{\ell} \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.$$
+$b_1,...,b_n$ Are orthonormal vectors spanning the row space of $A$ and $B_{2k}$.\\
+Hence using the Parseval's identity we can write:
+\begin{align}
+   \lVert A - B_{2k} \rVert_F^2 = \sum_{i=1}^n |(A - B_{2k})b_i|^2. 
+\end{align}
+ 
+
+
+
+For $i = 1,...,2k$, because $b_i^T b_i = 1$ we have
+\begin{align}
+ (A - B_{2k})b_i = Ab_i - Ab_i = 0,   
+\end{align}
+
+and for  $i = 2k+1,...,n$, because $b_j^Tb_i = 0$ we have
+\begin{align}
+(A - B_{2k})b_i = Ab_i.
+\end{align}
+
+\end{frame}
+
+\begin{frame}{Proof (continuation)}
+Now we continue from the equation
+    \begin{align}
+    \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2\\ 
+    &= \sum_{i=2k+1}^n |A b_i|^2 \\ 
+    &=\sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\ 
+    &\overset{\text{Parseval's id.}}{=} \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2 
+\end{align}
+\end{frame}
+
+
+
+\begin{frame}{Proof (continuation)}
+On the other hand, we have
+\begin{align}
+    \lVert A - A_k \rVert_F^2 
+\overset{\text{ Lemma \ref{lem:A_Ak}}}{=}& \sum_{i=k+1}^n \sigma_i^2 \\ \overset{\text{Frob. norm \cite{FrobeniusDef}}}{=}&  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+\end{align}
+\end{frame}
+
+
+\begin{frame}{Proof (continuation)}
+    Now we consider 
+\begin{align}
+   \lVert A - B_{2k} \rVert_F^2 - \lVert A - A_k \rVert_F^2 
+   &= \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2  - (\lVert A \rVert_F^2 - \lVert A_k \rVert_F^2) \\
+   &= \lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2,
+\end{align}
+that is equivalent to
+\begin{equation}
+   \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)  \label{eq:A} 
+\end{equation}
+\end{frame}
+
+
+
+\begin{frame}{Proof (continuation)}
+    For the next step, we show
+\begin{align}
+(1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
+\end{align}
+We write
+\begin{align}
+    \sum_{i=1}^{2k} \lambda_i^2 &\overset{|Bb_i| = \lambda_i}{=}\sum_{i=1}^{2k}|Bb_i|^2 \\
+    &\overset{\text{sbst. B}}{=} \sum_{i=1}^{2k} \left| \sqrt{\dfrac{n}{\ell}} R^T (Ab_i)\right|^2 \\
+    &= \sum_{i=1}^{2k} \dfrac{n}{\ell}\left| R^T (Ab_i)\right|^2
+\end{align}
+\end{frame}
+
+
+\begin{frame}{Proof (continuation)}
+    Now from the Johnson-Lindenstrauss lemma \cite{johnson1984Lindenstrauss} for very large $\ell \in \Omega((\log n)/\epsilon^2)$ we have for each $i$
+\begin{align}
+ \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
+\end{align}
+with high probability.
+
+Hence with a high probability
+\begin{align}
+(1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
+\end{align}
+\end{frame}
+
+
+\begin{frame}{Proof (continuation)}
+    Now we have
+\begin{align}
+    \sum_{i=1}^{2k} |A b_i|^2 &\geq \dfrac{1}{(1+\epsilon)} \sum_{i=1}^{2k} \lambda_i^2 \\
+    &\overset{\text{Cor. \ref{cor:10}}}{\geq} \dfrac{(1-\epsilon)}{(1+\epsilon)} \lVert A_k \rVert_F^2 \\
+    &\geq (1-2\epsilon) \lVert A_k \rVert_F^2
+\end{align}
+I.e.
+\begin{align}
+\sum_{i=1}^{2k} |A b_i|^2 \geq (1-2\epsilon) \lVert A_k \rVert_F^2 \label{eq:22}
+\end{align}
+\end{frame}
+
+
+\begin{frame}{Proof (continuation)}
+Remember the Equation \eqref{eq:A}:
+\begin{align}
+    \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)  %\label{eq:A} 
+\end{align}
+    Now we substitute the result of Equation \eqref{eq:22} in equation \eqref{eq:A}:
+\begin{align}
+    &\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2 \\
+\iff &\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
+\end{align}
+
+
+Due to the formulation of Frobenius norm as in Lemma \ref{lem:A_Ak}, %\cite{FrobeniusDef}
+ we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. \\
+ Hence
+\begin{align}
+\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2.
+\end{align}
+\qed
+\end{frame}
+
+
+\begin{frame}{Computational time}
+Given the term-document matrix $A \in \mathbb{R}^{n\times m}$.\\
+Runtime of standard LSI:
+\begin{itemize}
+    \item LSI computation: $O(mnc)$ if $A$ is sparse with about $c$
+nonzero entries per column
+\end{itemize}
+Runtime of LSI by random projection:
+\begin{itemize}
+    \item Random projection to $\ell$ dimensions: $O(mc\ell)$ 
+    \item LSI computation: $O(m\ell^2)$
+    \item Total time: $O(mc\ell + m\ell^2) = O(m(c\ell + \ell^2))$, with $\ell \in O(\frac{\log n}{\epsilon^2})$
+    \item Hence we get a total runtime: $O(m(\log^2 n + c \log n))$
+\end{itemize}
+$O(m(\log^2 n + c \log n))$ is asymptotically superior compared to $O(mnc)$
+    
+\end{frame}
+
+
+
+\begin{frame}{Summary and Conclusion}
+    \begin{itemize}
+        \item Latent semantic analysis as SVD base technique for information retrieval
+        \item Papadimitriou et al. analysed two important aspects \cite{APAPADIMITRIOU2000217}
+            \begin{itemize}
+            \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
+            \item How can we \color{Mahogany} reduce the computational time \color{black}? (Our main focus)
+           \end{itemize}
+           \item LSI by random projection leads to a reduction of computation time, while preventing the expressiveness of the original matrix.
+           \item Conclusion: SVD-based methods are powerful techniques to solve different types of problems. Newer techniques based on neural networks or graph neural networks
+    \end{itemize}
+\end{frame}
 
 %\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
@@ -477,18 +697,18 @@ This leads to an improved running time while preventing the expressiveness of th
 %------------------------------------------------
 
 %\begin{frame}
-%\frametitle{Table}
+%\frametitle{Computational time}
 %\begin{table}
 %\begin{tabular}{l l l}
 %\toprule
-%\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+%\textbf{Operation} & \textbf{ LSI} & \textbf{LSI by Random Projection}\\
 %\midrule
-%Treatment 1 & 0.0003262 & 0.562 \\
+%Random Projection & - &  \\
 %Treatment 2 & 0.0015681 & 0.910 \\
 %Treatment 3 & 0.0009271 & 0.296 \\
 %\bottomrule
 %\end{tabular}
-%\caption{Table caption}
+%\caption{Comparison between standard LSI and LSI by %Random Projection}
 %\end{table}
 %\end{frame}
 
@@ -530,9 +750,9 @@ This leads to an improved running time while preventing the expressiveness of th
 
 %------------------------------------------------
 
-\begin{frame}
-\Huge{\centerline{The End}}
-\end{frame}
+%\begin{frame}
+%\Huge{\centerline{The End}}
+%\end{frame}
 
 %----------------------------------------------------------------------------------------
 
