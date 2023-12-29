@@ -15,6 +15,15 @@
 %\usepackage{unicode-math}
 %\setmathfont{Arial}
 
+\usepackage{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+
+
+
+
+\usefonttheme{professionalfonts}
+
+
 \usepackage{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{MnSymbol}%
@@ -34,6 +43,9 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
 \input{plot_commands.tex}
+
+
+
 
 % Load the actual RWTH theme. Suggested is to load the full theme,
 % as it requires some specific dimensions
@@ -63,6 +75,8 @@
 
 \definecolor{Mahogany}{rgb}{0.75, 0.25, 0.0}
 \usepackage{xcolor}
+
+
 
 
 \begin{document}
@@ -155,7 +169,7 @@ $
 \begin{itemize}
     \item \color{Mahogany}  LSI \color{black} as an information retrieval method
     \item Finds the \color{Mahogany} latent (hidden) semantic structure \color{black} of textual data 
-    \item Represent term-document matrix as  \color{Mahogany} product of three matrices:  \color{black} term-topic, topic-topic and topic-document matrix
+    \item Represent term-document matrix as  \color{Mahogany} product of three matrices  \color{black} %term-topic, topic-topic and topic-document matrix
     
     \item Answer queries with help of these matrices
     \item Based on \color{Mahogany} singular value decomposition \color{black} of the matrix
@@ -172,15 +186,15 @@ $
 
 \begin{frame}{Singular Value Decomposition (SVD) \cite{strang2005}}
 \begin{itemize}
-    \item Any $n$ by $m$ matrix can be factored into
+    \item Any $n$ by $m$ matrix of rank $r$ can be factored into
     \[
-        A_{ n \times m} = U_{[n \times r]}D_{[r \times r]}(V_{[m \times r]})^T = \text{ (orthogonal)(diagonal)(orthogonal).}
+        A_{ n \times m} = U_{[n \times r]}D_{[r \times r]}(V_{[m \times r]})^T. %= \text{ (orthogonal)(diagonal)(orthogonal).}
     \]
-    \item $U$: \color{Mahogany}left singular vectors \color{black} ($n$ terms and $r$ topics)
-    \item $V$: \color{Mahogany} right singular vectors \color{black} ($m$ documents and $r$ topics)
-    \item $D$: \color{Mahogany} Singular values \color{black} $\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r$ in decreasing order
-    ($r \times r$ diagonal matrix representing the "importance" of each topic, where $r$ rank of matrix $A$)
-    \item Vector notation $$A = UDV^T = \sum_{i=1}^r \sigma_i u_i v_i^t$$
+    \item $U$ column-orthonormal matrix: \color{Mahogany}left singular vectors \color{black} %($n$ terms and $r$ topics)
+    \item $V$ column-orthonormal matrix: \color{Mahogany} right singular vectors \color{black} %($m$ documents and $r$ topics)
+    \item $D$ diagonal matrix: \color{Mahogany} Singular values \color{black} $\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r$ in decreasing order
+    %($r \times r$ diagonal matrix representing the "importance" of each topic)
+    \item Vector notation $$A = UDV^T = \sum_{i=1}^r \sigma_i u_i v_i^T$$
 \end{itemize}
 
     
@@ -238,8 +252,9 @@ $
 \begin{frame}{Latent Semantic Indexing based on SVD}
 \begin{itemize}
     \item LSI considers $A_k$ the rank $k$ approximation of $A$ (I.e. keep only $k$ most relevant topics)
-    \item In the example $k=2$
-    \item Map a query to $k$ dimensional space with $U_k$ and then apply cosine similarity to find similar documents in $D_kV_k^T$
+    $$A_k = U_k D_k V_k^T = \sum_{i=1}^k \sigma_i u_i v_i^T$$
+    %\item In the example $k=2$
+    %\item Map a query to $k$ dimensional space with $U_k$ and then apply cosine similarity to find similar documents in $D_kV_k^T$
 \end{itemize}
 
 
@@ -284,11 +299,14 @@ $
 & \text{\color{Mahogany}$V_k^T$}
 \end{array}
 \]
+\begin{itemize}
+    \item Map a query to $k$ dimensional space with $U_k$, apply cosine similarity to find similar documents in $D_kV_k^T$
+\end{itemize}
 \end{frame}
 
 
 \begin{frame}{Latent Semantic Indexing based on SVD}
-\begin{theorem} [Eckart and Young \cite{EckartYoung} ]
+\begin{theorem} [Eckart and Young \cite{EckartYoung}] 
 	Among all $n \times m$ matrices C of rank at most $k$, $A_k$ is the one that minimizes $||A - C||_F^2 = \sum_{i,j}(A_{ij} - C_{ij})^2$, where $F$ denotes the Frobenius norm of a matrix.
 \end{theorem}
 
@@ -325,11 +343,11 @@ $
 
 \begin{frame}{}
 \begin{itemize}
-    \item LSI has shown strong empirical results
+    \item Strong empirical results of LSI
     \item Two important aspects
     \begin{itemize}
         \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
-        \item How can we \color{Mahogany} reduce the computational time \color{black}?
+        \item How can we \color{Mahogany} reduce the computational complexity \color{black}?
     \end{itemize}
     \item Papadimitriou et al. \cite{APAPADIMITRIOU2000217} investigated both aspects:
     \begin{enumerate}
@@ -341,7 +359,7 @@ $
         \end{itemize}
         
     \end{enumerate}
-    \item In this presentation we focus on the \color{Mahogany} second \color{black} aspect
+    \item We focus on the \color{Mahogany} second \color{black} aspect
 \end{itemize}
    
 \end{frame}
@@ -350,23 +368,12 @@ $
 %\section{Brief Mention of Analysis of LSI’s Good Performance}
 
 \section{LSI by Random Projection}
-\begin{frame}{}
- \begin{itemize}
-    \item In this section we will investigate the question "How we can speed up the computation": Informal formulation of the main theorem of this section (Theorem 5 original paper)
-    \item Introduction of theorems and lemmas that are necessary for the proof of the main theorem 
-    \item Introduction: the main theorem (Theorem 5 original paper)
-    \item Proof of the main theorem (Theorem 5 original paper)
-    \item Computational savings achieved by LSI by random projection
-\end{itemize}   
-\end{frame}
-
-
 \begin{frame}{Random Projection for Dimensionality Reduction}
 Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to \color{Mahogany} reduce the dimensionality \color{black} of matrix $A$ by preserving pairwise distances between any two points:
 $$B = \sqrt{\frac{n}{\ell}} \cdot R^T A \in \mathbb{R}^{\ell \times m}$$
 
-\begin{lemma}[Johnson and Lindenstrauss \cite{johnson1984Lindenstrauss} ]
-Let $v \in  \mathbb{R}^{n}$ be a unit vector, let $H$ be a random $\ell$-dimensional subspace through the origin, and let the random variable $X$ denote the square of the length of the projection of $v$ onto $H$. Suppose $0 <\epsilon < 0.5$, and $24 \log n < 1 < \sqrt{n}$. Then, $E[X] = \frac{\ell}{n}$, and
+\begin{lemma}[Johnson and Lindenstrauss \cite{johnson1984Lindenstrauss}]
+Let $v \in  \mathbb{R}^{n}$ be a unit vector, let $H$ be a random $\ell$-dimensional subspace through the origin, and let the random variable $X$ denote the square of the length of the projection of $v$ onto $H$. Suppose $0 <\epsilon < 0.5$, and $24 \log n < \ell < \sqrt{n}$. Then, $E[X] = \frac{\ell}{n}$, and
 $$Pr(|X -  \frac{\ell}{n}| > \epsilon \frac{\ell}{n}) < 2 \sqrt{\ell} e ^{-(\ell - 1) \epsilon^2 / 4 }$$
 \end{lemma}
 
@@ -374,9 +381,9 @@ $$Pr(|X -  \frac{\ell}{n}| > \epsilon \frac{\ell}{n}) < 2 \sqrt{\ell} e ^{-(\ell
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Two Step LSI}
+\begin{frame}{Two-Step LSI}
 \begin{enumerate}
-    \item Apply a \color{Mahogany} random projection \color{black} onto $\ell$ dimensions, where $\ell$ is a small value greater than $k$, on $A$.
+    \item Apply a \color{Mahogany} random projection \color{black} onto $\ell$ dimensions on $A$. ($\ell > k$) %, where $\ell$ is a small value greater than $k$, on $A$.
 
 \begin{align*}
     B = 
@@ -398,14 +405,15 @@ A
 \label{eq:matrixB}
 \end{align*}
     
-    \item  Apply \color{Mahogany} rank $O(k)$ LSI \color{black} (because of the random projection, the number of
-singular values kept may have to be slightly increased).
+    \item  Apply \color{Mahogany} rank $O(k)$ LSI \color{black} %(because of the random projection, the number of
+%singular values kept may have to be slightly increased).
 \end{enumerate}
 \vspace{1cm}
-Later we will show the theorem STEXXXX. Informally the \color{Mahogany} theorem states\color{black}:
-\begin{itemize}
-    \item original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI 
-    \item improved running time
+%Later we will show the theorem STEXXXX. Informally the \color{Mahogany} theorem states\color{black}:
+\begin{itemize} 
+    \item Improved computational complexity
+    \item %original matrix $A$ after applying random projection and then LSI is 
+    With high probability the original matrix $A$ almost as good recovered as by directly using LSI (Formulation and proof of theorem later)
 \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -427,13 +435,13 @@ $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \
 
 
 \begin{frame}{Background and Notation for the Proof}
-\begin{lemma}
-Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...t$
+\begin{lemma} [3]
+Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...,\ell$
 \[
 \lambda_p^2 \geq \dfrac{1}{k} \left[(1-\epsilon) \sum_{i=1}^k \sigma_i^2 - \sum_{j=1}^{p-1} \lambda_j^2\right].
 \]
 \end{lemma}
-\begin{corollary}
+\begin{corollary}[4]
 \label{cor:10}
 \[
 \sum_{p=1}^{2k} \lambda_p^2 \geq (1-\epsilon) \lVert A_k \rVert_F^2.
@@ -445,7 +453,7 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 
 
 \begin{frame}{Background and Notation for the Proof}
-    \begin{lemma}
+    \begin{lemma}[5]
 \label{lem:A_Ak}
 \[
 \lVert A - A_k \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2. 
@@ -469,15 +477,15 @@ Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsi
 \begin{frame}{Main Theorem}
     %Now we can introduce the main theorem of this section:
 \vspace{-1cm}
-\begin{theorem}
+\begin{theorem} [Papadimitriou et al. \cite{APAPADIMITRIOU2000217}] \label{main thorem}
 \label{theorem:imp}
 \[
     \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2
 \]
 where $\epsilon \in (0,0.5)$
-\end{theorem}
+\end{theorem} 
 \vspace{1cm}
-Informally, the theorem states that the original matrix $A$ after applying \color{Mahogany} random projection  \color{black}  and then  \color{Mahogany} LSI  \color{black} is almost as good  \color{Mahogany} recovered  \color{black} as by using  \color{Mahogany} one-step LSI  \color{black} on the original matrix.
+Informally, the theorem states that the original matrix $A$ after applying \color{Mahogany} random projection  \color{black}  and then  \color{Mahogany} LSI  \color{black} is with high probability almost as good  \color{Mahogany} recovered  \color{black} as by using  \color{Mahogany} one-step LSI  \color{black} on the original matrix.
 \end{frame}
 
 
@@ -599,6 +607,7 @@ We write
  \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
 \end{align}
 with  \color{Mahogany} high probability \color{black}.
+\vspace{1cm}
 
 Hence with a high probability
 \begin{align}
@@ -634,7 +643,7 @@ I.e.
   \end{tikzpicture}%
 Remember the Equation \eqref{eq:A}:
 \begin{align}
-    \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)  %\label{eq:A} 
+    \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2) \nonumber  %\label{eq:A} 
 \end{align}
     Now we   \color{Mahogany} substitute  \color{black} the result of Equation \eqref{eq:22} in equation \eqref{eq:A}:
 \begin{align}
@@ -656,36 +665,36 @@ Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in 
 \begin{frame}{Comparison of Computational Time}
 Given the term-document matrix $A \in \mathbb{R}^{n\times m}$.\\
 \vspace{1cm}
-Runtime of \color{Mahogany} one-step \color{black} LSI:
+Time complexity of \color{Mahogany} one-step \color{black} LSI:
 \begin{itemize}
     \item LSI computation: \color{Mahogany} $O(mnc)$ \color{black} if $A$ is sparse with about $c$
 nonzero entries per column
 \end{itemize}
 \vspace{1cm}
-Runtime of LSI by \color{Mahogany} random projection \color{black}:
+Time complexity of  LSI by \color{Mahogany} random projection \color{black}:
 \begin{itemize}
     \item Random projection to $\ell$ dimensions: $O(mc\ell)$ 
     \item LSI computation: $O(m\ell^2)$
-    \item Total time: $O(mc\ell + m\ell^2) = O(m(c\ell + \ell^2))$, with $\ell \in O(\frac{\log n}{\epsilon^2})$
-    \item Hence we get a total runtime: \color{Mahogany} $O(m(\log^2 n + c \log n))$ \color{black}
+    \item Together: $O(mc\ell + m\ell^2) = O(m(c\ell + \ell^2))$, with $\ell \in O(\frac{\log n}{\epsilon^2})$
+    \item Hence we get a time complexity: \color{Mahogany} $O(m(\log^2 n + c \log n))$ \color{black}
 \end{itemize}
 \vspace{1cm}
-$O(m(\log^2 n + c \log n))$ is \color{Mahogany} asymptotically superior \color{black} compared to $O(mnc)$
+$O(m(\log^2 n + c \log n))$  \color{Mahogany} better than \color{black} $O(mnc)$
     
 \end{frame}
 
 
-\section{Summary and Conclusion}
-\begin{frame}{Summary and Conclusion}
+\section{Summary and Newer Approaches}
+\begin{frame}%{Summary and Newer Approaches}
     \begin{itemize}
-        \item Latent semantic analysis: SVD based technique for information retrieval
+        \item Latent semantic analysis: SVD-based technique for information retrieval
         \item Papadimitriou et al. analysed two important aspects \cite{APAPADIMITRIOU2000217}
             \begin{itemize}
             \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
             \item How can we \color{Mahogany} reduce the computational time \color{black}? (Our main focus)
            \end{itemize}
-           \item LSI by random projection leads to a \color{Mahogany} reduction of computation time \color{black}, while preventing the \color{Mahogany} expressiveness \color{black} of the original matrix. (Theorem STEXXX)
-           \item There are newer techniques based on \color{Mahogany} neural networks 
+           \item LSI by random projection: \color{Mahogany} reduction of computational complexity\color{black}, while preventing the \color{Mahogany} expressiveness \color{black} of original matrix with high probability.
+           \item There are newer techniques based on \color{Mahogany} neural networks \color{black}\cite{GNN, HYLe17}
     \end{itemize}
 \end{frame}
 
