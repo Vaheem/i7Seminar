@@ -141,12 +141,11 @@ Latent Semantic Indexing (LSI) is one of the information retrieval techniques. I
 LSI has shown strong empirical results. However, prior to the paper of Papadimitriou et al., there was no satisfactory explanation for its success. The question is: Why does LSI find the documents corresponding to the semantics of the query with high accuracy. They prove a theorem that under certain constraints LSI will always find the correct topic of the given query with high probability. \cref{Brief Mention of Analysis of LSI's Good Performance} of this seminar paper elaborates on this theorem.
 
 Despite its effectiveness, the computational time of LSI is very long. Papadimitriou et al. introduce a two-step LSI, in which we first map the original term-document matrix into a lower dimensional space by using random projections and then apply LSI. The paper proves that the matrix obtained via random projection followed by LSI recovers almost as much as the matrix obtained by direct LSI, with high probability.  \cref{LSI by Random Projection} provides a detailed analysis of LSI by random projection and presents the proof for this statement.
-
-In the last section, we will draw a conclusion and give a short summary of this seminar paper.
+In the last section, we will draw a conclusion and give a short summary.
 
 \section{Related Work}
 Hofmann et al. analyze the LSI from a different probabilistic point of view comparing SVD to mixture decomposition using expectation maximization algorithm \cite{Relatedwork1}.
-Despite analyzing the LSI's good performance, Frieze et al. give another method to speed up LSI, introducing an approach that includes Fast-Monte-Carlo algorithms \cite{Relatedwork2}. More LSI insights can be found in \cite{SVDNEW1, SVDNEW2, SVDNEW3}.
+Despite analyzing the LSI's good performance, Frieze et al. give another method to speed up LSI, introducing an approach that includes Fast-Monte-Carlo algorithms \cite{Relatedwork2}. More LSI insights can be found in \cite{SVDNEW1, SVDNEW2, SVDNEW3, RELATED}. Newer information retrieval methods are given in \cite{GNN, HYLe17}.
 
 
 
@@ -298,7 +297,7 @@ Apply a random projection onto $\ell$ dimensions, where $\ell$ is a small value 
 
 \begin{equation}
     B = 
-\sqrt{\dfrac{n}{l}}
+\sqrt{\dfrac{n}{\ell}}
 \cdot
 \begin{pmatrix}
     \phantom{-} \big\lvert \phantom{-} & \phantom{-} \vert \phantom{-} & & \phantom{-} \vert \phantom{-} \\
@@ -321,7 +320,7 @@ singular values kept may have to be increased a little).
 \end{enumerate}
 
 Before diving into the main theorem of this chapter, let's cover some formal groundwork.
-We again consider $A \in \mathbb{R}^{n \times m}$ which represents our term-document matrix and is generated from the corpus model. Let $R \in \mathbb{R}^{n \times l} $ be a random column-orthonormal matrix. We use $R$ to project $A$ into $\ell$-dimensional space. We define $B:= \sqrt{n/\ell}R^TA$ as the scaled random projection of $A$, see the visualization in \ref{eq:matrixB}.
+We again consider $A \in \mathbb{R}^{n \times m}$ which represents our term-document matrix and is generated from the corpus model. Let $R \in \mathbb{R}^{n \times l} $ be a random column-orthonormal matrix. We use $R$ to project $A$ into $\ell$-dimensional space. We define $B:= \sqrt{n/\ell}R^TA$ as the scaled random projection of $A$, see Equation \eqref{eq:matrixB}.
 The SVD representations of A and B are denoted as follows:
 \[
 A = \sum_{i=1}^r \sigma_i u_i v_i^T \,\,\,\,\,\,\,\,\text{and}\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i^T.
@@ -373,20 +372,20 @@ Now we can introduce the main theorem of this section:
 \]
 where $\epsilon \in (0,0.5)$
 \end{theorem}
-Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix.
+Informally, the theorem states that the original matrix $A$ after applying random projection and then LSI is almost as good recovered as by using LSI on the original matrix with high probability.
 
 
 \begin{proof}
 We have 
 \[
-A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^t \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.
+A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^{\ell} \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.
 \]
 
 %\[
 % B=\sum_{i=1}^t \lambda_i a_i b_i^T\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} := A \sum_{i=1}^{2k} b_ib_i^T.
 %\]
 
-$b_1,...,b_n$ is an orthonormal set of vectors spanning the row space of $A$ (because $R$ is an orthonormal matrix, resulting orthonormal projection) hence using the Parseval's identity we can write
+$b_1,...,b_n$ is an orthonormal set of vectors spanning the row space of $A$ (because $R$ is an orthonormal matrix, resulting in orthonormal projection) hence using the Parseval's identity we can write
 \[
  \lVert A - B_{2k} \rVert_F^2 = \sum_{i=1}^n |(A - B_{2k})b_i|^2
 \]
@@ -458,7 +457,7 @@ Now we substitute this result in equation \ref{eq:A} getting
 \iff \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
 \end{align*}
 
-Due to the formulation of Frobenius norm as in \ref{lem:A_Ak}, %\cite{FrobeniusDef}
+Due to the formulation of Frobenius norm as in Lemma \ref{lem:A_Ak}, %\cite{FrobeniusDef}
  we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. This inequality leads us to the conclusive result of our proof
 \[
 \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2.
