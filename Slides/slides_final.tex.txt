@@ -78,7 +78,7 @@
 
 
 
-
+\setbeamerfont{itemize/enumerate body}{size=\huge}
 \begin{document}
 
 \setbeamercolor{title page bar}{fg=rwth}
@@ -117,13 +117,16 @@
 %Here should be 
 
 \begin{frame}{Motivation}
+\setbeamerfont{itemize/enumerate body}{size=\huge}
 \begin{itemize}
     \item Large datasets, often organized in tabular form, represented as \color{Mahogany}matrices \color{black}
+    \setbeamerfont{itemize/enumerate body}{size=\huge}
     \begin{itemize}
         \item Term-document matrix representing word occurrence in documents
         \item Movie-user matrix representing watched movies of users
     \end{itemize}
     %\item Each entry defined with frequency based function
+    \vspace{0.6cm}
     \item Interesting aspects
     \begin{itemize}
         \item \color{Mahogany}Find \color{black} documents semantically associated with a \color{Mahogany} query \color{black}
@@ -165,13 +168,31 @@ $
 
 
 \begin{frame}{Latent Semantic Indexing}
-
+\setbeamerfont{itemize/enumerate body}{size=\huge}
 \begin{itemize}
     \item \color{Mahogany}  LSI \color{black} as an information retrieval method
-    \item Finds the \color{Mahogany} latent (hidden) semantic structure \color{black} of textual data 
+\end{itemize}
+\vspace{0.6cm}
+\begin{itemize}
+    \item Finds the \color{Mahogany} latent (hidden) semantic structure 
+    \color{black} of textual data. Solves the following problems: 
+        \begin{itemize}
+            \item \color{Mahogany} Synonymy \color{black} %(missing documents with references to "automobile"
+%when querying on "car") %Sinonymy
+            \item \color{Mahogany} Polysemy \color{black} %(retrieving documents about the Internet
+%when querying on "surfing") %Polysymy
+        \end{itemize}
+    \end{itemize}
+    \vspace{0.6cm}
+    \begin{itemize}
     \item Represent term-document matrix as  \color{Mahogany} product of three matrices  \color{black} %term-topic, topic-topic and topic-document matrix
-    
+    \end{itemize}
+    \vspace{0.6cm}
+    \begin{itemize}
     \item Answer queries with help of these matrices
+    \end{itemize}
+    \vspace{0.6cm}
+    \begin{itemize}
     \item Based on \color{Mahogany} singular value decomposition \color{black} of the matrix
     
     
@@ -300,7 +321,7 @@ $
 \end{array}
 \]
 \begin{itemize}
-    \item Map a query to $k$ dimensional space with $U_k$, apply cosine similarity to find similar documents in $D_kV_k^T$
+    \item \color{Mahogany} Map \color{black} a query to $k$ dimensional space with \color{Mahogany} $U_k$ \color{black}, apply \color{Mahogany} cosine similarity \color{black} to find similar documents in \color{Mahogany} $D_kV_k^T$ \color{black}
 \end{itemize}
 \end{frame}
 
@@ -342,23 +363,35 @@ $
 \section{Original Paper Overview and Emphasized Aspect}
 
 \begin{frame}{}
+\setbeamerfont{itemize/enumerate body}{size=\huge}
 \begin{itemize}
     \item Strong empirical results of LSI
+\end{itemize}
+\vspace{0.6cm}
+\begin{itemize}
     \item Two important aspects
     \begin{itemize}
         \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
-        \item How can we \color{Mahogany} reduce the computational complexity \color{black}?
+        \item How to \color{Mahogany} reduce the computational complexity \color{black}?
     \end{itemize}
+\end{itemize}
+\vspace{0.6cm}
+\begin{itemize}
     \item Papadimitriou et al. \cite{APAPADIMITRIOU2000217} investigated both aspects:
     \begin{enumerate}
-        \item Under certain constraints on the term-document matrix, semantically related documents are mapped to \color{Mahogany} similar vectors \color{black}
-        \item Instead of LSI use \color{Mahogany} LSI by random projection.\color{black}  This reduces the computational time: 
+        \item Under certain constraints %on term-document matrix, 
+        semantically 
+        related documents are mapped to \color{Mahogany} similar vectors \color{black}
+        \item Instead of LSI use \color{Mahogany} LSI by random projection.\color{black}  %This reduces the computational time: 
         \begin{itemize}
             \item Map the original term-document matrix into a lower dimensional space
             \item Use LSI on the lower dimensional matrix
         \end{itemize}
         
     \end{enumerate}
+    \end{itemize}
+    \vspace{0.6cm}
+    \begin{itemize}
     \item We focus on the \color{Mahogany} second \color{black} aspect
 \end{itemize}
    
@@ -369,7 +402,7 @@ $
 
 \section{LSI by Random Projection}
 \begin{frame}{Random Projection for Dimensionality Reduction}
-Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to \color{Mahogany} reduce the dimensionality \color{black} of matrix $A$ by preserving pairwise distances between any two points:
+Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to \color{Mahogany} reduce the dimensionality \color{black} of matrix $A$ while preserving pairwise distances between any two points:
 $$B = \sqrt{\frac{n}{\ell}} \cdot R^T A \in \mathbb{R}^{\ell \times m}$$
 
 \begin{lemma}[Johnson and Lindenstrauss \cite{johnson1984Lindenstrauss}]
@@ -416,6 +449,75 @@ A
     With high probability the original matrix $A$ almost as good recovered as by directly using LSI (Formulation and proof of theorem later)
 \end{itemize}
 \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Comparison of Computational Time}
+Given the term-document matrix $A \in \mathbb{R}^{n\times m}$.\\
+\vspace{1cm}
+Time complexity of \color{Mahogany} one-step \color{black} LSI:
+\begin{itemize}
+    \item LSI computation: \color{Mahogany} $O(mnc)$ \color{black} if $A$ is sparse with about $c$
+nonzero entries per column
+\end{itemize}
+\vspace{1cm}
+Time complexity of  LSI by \color{Mahogany} random projection \color{black}:
+\begin{itemize}
+    \item Random projection to $\ell$ dimensions: $O(mc\ell)$ 
+    \item LSI computation: $O(m\ell^2)$
+    \item Together: $O(mc\ell + m\ell^2) = O(m(c\ell + \ell^2))$, with $\ell \in O(\frac{\log n}{\epsilon^2})$
+    \item Hence we get a time complexity: \color{Mahogany} $O(m(\log^2 n + c \log n))$ \color{black}
+\end{itemize}
+\vspace{1cm}
+$O(m(\log^2 n + c \log n))$  \color{Mahogany} better than \color{black} $O(mnc)$
+    
+\end{frame}
+
+\begin{frame}{Comparison of Both Matrices}
+\begin{itemize}
+    \item \color{Mahogany} A \color{black}: original term-document matrix 
+    \item \color{Mahogany} B \color{black}: original term-document matrix after random projection and scaling
+    \item \color{black} $\ell \in O(\frac{\log n}{\epsilon^2})$ \color{black}, with $\epsilon \in (0, 0.5)$
+    \item Dimensionality reduction for each document \color{Mahogany} ($\ell << n$)
+\end{itemize}
+
+
+
+\hspace*{9cm}
+$
+\begin{array}{c@{}c}
+& \text{\color{Mahogany} A }  \\
+\text{ } & \begin{pmatrix}
+0 & 1 & \dots & 1 \\
+1 & 0 & \dots & 1 \\
+\vdots & \vdots & \ddots & \vdots \\
+1 & 0 & \dots & 0
+\end{pmatrix} \\
+& \text{$n \times m$}
+\end{array}
+$
+\hspace*{2cm}
+\begin{tikzpicture}
+\draw[->, line width=2pt, >=stealth] (0,0) -- (2,0);
+\end{tikzpicture}
+\hspace*{2cm}
+%
+$
+\begin{array}{c@{}c}
+& \text{\color{Mahogany}B }  \\
+\text{} & \begin{pmatrix}
+0 & 0.47 & \dots & 0.47 \\
+%1 & 0 & \dots & 0.47 \\
+\vdots & \vdots & \ddots & \vdots \\
+0.47 & 0 & \dots & 0
+\end{pmatrix} \\
+& \text{$\ell \times m$}
+\end{array}
+$
+    
+\end{frame}
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Background and Notation for the Proof}
@@ -492,7 +594,7 @@ Informally, the theorem states that the original matrix $A$ after applying \colo
 \begin{frame}{Proof}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
   
@@ -523,7 +625,7 @@ and for  $i = 2k+1,...,n$, because  \color{Mahogany} $b_j^Tb_i = 0$  \color{blac
 
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
 
@@ -542,7 +644,7 @@ Now we continue from the equation
 \begin{frame}{Proof (continued)}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
   
@@ -557,7 +659,7 @@ On the other hand, we have
 \begin{frame}{Proof (continued)}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
   
@@ -578,7 +680,7 @@ that is equivalent to
 \begin{frame}{Proof (continued)}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
 
@@ -598,7 +700,7 @@ We write
 \begin{frame}{Proof (continued)}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
 
@@ -619,7 +721,7 @@ Hence with a high probability
 \begin{frame}{Proof (continued)}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
     Now we have
@@ -638,7 +740,7 @@ I.e.
 \begin{frame}{Proof (continued)}
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
-      \includegraphics[width=20cm,height=3cm]{photo_2023-12-17_17-07-02.jpg}%
+      \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
 Remember the Equation \eqref{eq:A}:
@@ -662,40 +764,35 @@ Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in 
 \end{frame}
 
 
-\begin{frame}{Comparison of Computational Time}
-Given the term-document matrix $A \in \mathbb{R}^{n\times m}$.\\
-\vspace{1cm}
-Time complexity of \color{Mahogany} one-step \color{black} LSI:
-\begin{itemize}
-    \item LSI computation: \color{Mahogany} $O(mnc)$ \color{black} if $A$ is sparse with about $c$
-nonzero entries per column
-\end{itemize}
-\vspace{1cm}
-Time complexity of  LSI by \color{Mahogany} random projection \color{black}:
-\begin{itemize}
-    \item Random projection to $\ell$ dimensions: $O(mc\ell)$ 
-    \item LSI computation: $O(m\ell^2)$
-    \item Together: $O(mc\ell + m\ell^2) = O(m(c\ell + \ell^2))$, with $\ell \in O(\frac{\log n}{\epsilon^2})$
-    \item Hence we get a time complexity: \color{Mahogany} $O(m(\log^2 n + c \log n))$ \color{black}
-\end{itemize}
-\vspace{1cm}
-$O(m(\log^2 n + c \log n))$  \color{Mahogany} better than \color{black} $O(mnc)$
-    
-\end{frame}
+
 
 
 \section{Summary and Newer Approaches}
 \begin{frame}%{Summary and Newer Approaches}
+\setbeamerfont{itemize/enumerate body}{size=\huge}
+\begingroup
+\setlength{\itemsep}{10cm}
     \begin{itemize}
         \item Latent semantic analysis: SVD-based technique for information retrieval
+    \end{itemize}
+\vspace{0.6cm}
+\begin{itemize}
         \item Papadimitriou et al. analysed two important aspects \cite{APAPADIMITRIOU2000217}
+            \setbeamerfont{itemize/enumerate body}{size=\huge}
             \begin{itemize}
             \item Why does LSI find \color{Mahogany} semantically related \color{black}documents?
-            \item How can we \color{Mahogany} reduce the computational time \color{black}? (Our main focus)
+            \item How to \color{Mahogany} reduce the computational time \color{black}? (Our main focus)
            \end{itemize}
+\end{itemize}
+\vspace{0.6cm}
+\begin{itemize}
            \item LSI by random projection: \color{Mahogany} reduction of computational complexity\color{black}, while preventing the \color{Mahogany} expressiveness \color{black} of original matrix with high probability.
+\end{itemize}
+\vspace{0.6cm}
+\begin{itemize}
            \item There are newer techniques based on \color{Mahogany} neural networks \color{black}\cite{GNN, HYLe17}
     \end{itemize}
+\endgroup
 \end{frame}
 
 %\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
