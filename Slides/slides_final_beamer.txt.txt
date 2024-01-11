@@ -125,23 +125,27 @@
 \begin{frame}{Motivation}
 \setbeamerfont{itemize/enumerate body}{size=\huge}
 \begin{itemize}
-    \item Large datasets, often organized in tabular form, represented as \color{Mahogany}matrices \color{black}
+    \onslide<1->{\item Large datasets, often organized in tabular form, represented as \color{Mahogany}matrices \color{black}
     \setbeamerfont{itemize/enumerate body}{size=\huge}
     \begin{itemize}
         \item Term-document matrix representing word occurrence in documents
         \item Movie-user matrix representing watched movies of users
     \end{itemize}
+    }
     %\item Each entry defined with frequency based function
     \vspace{0.6cm}
+    \onslide<2->{
     \item Interesting aspects
     \begin{itemize}
         \item \color{Mahogany}Find \color{black} documents semantically associated with a \color{Mahogany} query \color{black}
         \item \color{Mahogany} Recommend \color{black} a new movie to a user
     \end{itemize}
+    }
 \end{itemize}
 \vspace{1cm}
 
 \hspace*{2cm}
+\onslide<1->{
 \begin{tabular}{|c|c|c|c|c|}
 \hline
  & Doc 1 & Doc 2 & ... &  Doc m \\ \hline
@@ -168,6 +172,7 @@ $
 & \text{$n \times m$}
 \end{array}
 $
+}
 
 \end{frame}
 
@@ -175,10 +180,13 @@ $
 
 \begin{frame}{Latent Semantic Indexing}
 \setbeamerfont{itemize/enumerate body}{size=\huge}
+\onslide<1->{
 \begin{itemize}
     \item \color{Mahogany}  LSI \color{black} as an information retrieval method
 \end{itemize}
+}
 \vspace{0.6cm}
+\onslide<2->{
 \begin{itemize}
     \item Finds the \color{Mahogany} latent (hidden) semantic structure 
     \color{black} of textual data. Solves the following problems: 
@@ -189,20 +197,26 @@ $
 %when querying on "surfing") %Polysymy
         \end{itemize}
     \end{itemize}
+}
+
     \vspace{0.6cm}
+\onslide<3->{
     \begin{itemize}
     \item Represent term-document matrix as  \color{Mahogany} product of three matrices  \color{black} %term-topic, topic-topic and topic-document matrix
     \end{itemize}
+}
     \vspace{0.6cm}
+\onslide<4->{
     \begin{itemize}
     \item Answer queries with help of these matrices
     \end{itemize}
+}
     \vspace{0.6cm}
+\onslide<5->{
     \begin{itemize}
-    \item Based on \color{Mahogany} singular value decomposition \color{black} of the matrix
-    
-    
+    \item Based on \color{Mahogany} singular value decomposition \color{black} of the matrix    
 \end{itemize}
+}
     
 \end{frame}
 
@@ -212,16 +226,27 @@ $
 \section{LSI Background}
 
 \begin{frame}{Singular Value Decomposition (SVD) \cite{strang2005}}
+
 \begin{itemize}
+    \onslide<1->{
     \item Any $n$ by $m$ matrix of rank $r$ can be factored into
     \[
         A_{ n \times m} = U_{[n \times r]}D_{[r \times r]}(V_{[m \times r]})^T. %= \text{ (orthogonal)(diagonal)(orthogonal).}
     \]
+    }
+    \onslide<2->{
     \item $U$ column-orthonormal matrix: \color{Mahogany}left singular vectors \color{black} %($n$ terms and $r$ topics)
+    }
+    \onslide<3->{
     \item $V$ column-orthonormal matrix: \color{Mahogany} right singular vectors \color{black} %($m$ documents and $r$ topics)
+    }
+    \onslide<4->{
     \item $D$ diagonal matrix: \color{Mahogany} Singular values \color{black} $\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r$ in decreasing order
+    }
     %($r \times r$ diagonal matrix representing the "importance" of each topic)
+    \onslide<5->{
     \item Vector notation $$A = UDV^T = \sum_{i=1}^r \sigma_i u_i v_i^T$$
+    }
 \end{itemize}
 
     
@@ -277,6 +302,7 @@ $
 
 
 \begin{frame}{Latent Semantic Indexing based on SVD}
+\onslide<1->{
 \begin{itemize}
     \item LSI considers $A_k$ the rank $k$ approximation of $A$ (I.e. keep only $k$ most relevant topics)
     $$A_k = U_k D_k V_k^T = \sum_{i=1}^k \sigma_i u_i v_i^T$$
@@ -326,9 +352,12 @@ $
 & \text{\color{Mahogany}$V_k^T$}
 \end{array}
 \]
+}
+\onslide<2->{
 \begin{itemize}
     \item \color{Mahogany} Map \color{black} a query to $k$ dimensional space with \color{Mahogany} $U_k$ \color{black}, apply \color{Mahogany} cosine similarity \color{black} to find similar documents in \color{Mahogany} $D_kV_k^T$ \color{black}
 \end{itemize}
+}
 \end{frame}
 
 
@@ -370,10 +399,13 @@ $
 
 \begin{frame}{}
 \setbeamerfont{itemize/enumerate body}{size=\huge}
+\onslide<1->{
 \begin{itemize}
     \item Strong empirical results of LSI
 \end{itemize}
+}
 \vspace{0.6cm}
+\onslide<2->{
 \begin{itemize}
     \item Two important aspects
     \begin{itemize}
@@ -381,7 +413,9 @@ $
         \item How to \color{Mahogany} reduce the computational complexity \color{black}?
     \end{itemize}
 \end{itemize}
+}
 \vspace{0.6cm}
+\onslide<3->{
 \begin{itemize}
     \item Papadimitriou et al. \cite{APAPADIMITRIOU2000217} investigated both aspects:
     \begin{enumerate}
@@ -397,10 +431,12 @@ $
     \end{enumerate}
     \end{itemize}
     \vspace{0.6cm}
+}
+\onslide<4->{
     \begin{itemize}
     \item We focus on the \color{Mahogany} second \color{black} aspect
 \end{itemize}
-   
+}
 \end{frame}
 
 
@@ -408,19 +444,23 @@ $
 
 \section{LSI by Random Projection}
 \begin{frame}{Random Projection for Dimensionality Reduction}
+\onslide<1->{
 Given a matrix $A \in \mathbb{R}^{n \times m}$ and a matrix $R \in \mathbb{R}^{\ell \times n}$. Use matrix $R$ to \color{Mahogany} reduce the dimensionality \color{black} of matrix $A$ while preserving pairwise distances between any two points:
 $$B = \sqrt{\frac{n}{\ell}} \cdot R^T A \in \mathbb{R}^{\ell \times m}$$
+}
 
+\onslide<2->{
 \begin{lemma}[Johnson and Lindenstrauss \cite{johnson1984Lindenstrauss}]
 Let $v \in  \mathbb{R}^{n}$ be a unit vector, let $H$ be a random $\ell$-dimensional subspace through the origin, and let the random variable $X$ denote the square of the length of the projection of $v$ onto $H$. Suppose $0 <\epsilon < 0.5$, and $24 \log n < \ell < \sqrt{n}$. Then, $E[X] = \frac{\ell}{n}$, and
 $$Pr(|X -  \frac{\ell}{n}| > \epsilon \frac{\ell}{n}) < 2 \sqrt{\ell} e ^{-(\ell - 1) \epsilon^2 / 4 }$$
 \end{lemma}
-
+}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Two-Step LSI}
+\onslide<1->{
 \begin{enumerate}
     \item Apply a \color{Mahogany} random projection \color{black} onto $\ell$ dimensions on $A$. ($\ell > k$) %, where $\ell$ is a small value greater than $k$, on $A$.
 
@@ -449,14 +489,18 @@ A
 \end{enumerate}
 \vspace{1cm}
 %Later we will show the theorem STEXXXX. Informally the \color{Mahogany} theorem states\color{black}:
+}
+\onslide<2->{
 \begin{itemize} 
     \item Improved computational complexity
     \item %original matrix $A$ after applying random projection and then LSI is 
     With high probability the original matrix $A$ almost as good recovered as by directly using LSI (Formulation and proof of theorem later)
 \end{itemize}
+}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Comparison of Computational Time}
+\onslide<1->{
 Given the term-document matrix $A \in \mathbb{R}^{n\times m}$.\\
 \vspace{1cm}
 Time complexity of \color{Mahogany} one-step \color{black} LSI:
@@ -464,7 +508,9 @@ Time complexity of \color{Mahogany} one-step \color{black} LSI:
     \item LSI computation: \color{Mahogany} $O(mnc)$ \color{black} if $A$ is sparse with about $c$
 nonzero entries per column
 \end{itemize}
+}
 \vspace{1cm}
+\onslide<2->{
 Time complexity of  LSI by \color{Mahogany} random projection \color{black}:
 \begin{itemize}
     \item Random projection to $\ell$ dimensions: $O(mc\ell)$ 
@@ -474,15 +520,21 @@ Time complexity of  LSI by \color{Mahogany} random projection \color{black}:
 \end{itemize}
 \vspace{1cm}
 $O(m(\log^2 n + c \log n))$  \color{Mahogany} better than \color{black} $O(mnc)$
-    
+}
 \end{frame}
 
 \begin{frame}{Comparison of Both Matrices}
 \begin{itemize}
+    \onslide<1->{
     \item \color{Mahogany} A \color{black}: original term-document matrix 
     \item \color{Mahogany} B \color{black}: original term-document matrix after random projection and scaling
+    }
+    \onslide<2->{
     \item \color{black} $\ell \in \Omega(\frac{\log n}{\epsilon^2})$ \color{black}, with $\epsilon \in (0, 0.5)$
+    }
+    \onslide<3->{
     \item Dimensionality reduction for each document \color{Mahogany} ($\ell << n$)
+    }
 \end{itemize}
 
 
@@ -527,14 +579,24 @@ $
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Background and Notation for the Proof}
+\onslide<1->{
 Vector notations of SVD:
 $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \sum_{i=1}^k \sigma_i u_i v_i^T,  \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B=\sum_{i=1}^{\ell} \lambda_i a_i b_i^T,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, B_{2k} = A \sum_{i=1}^{2k} b_ib_i^T.$$
+}
 \vspace{1cm}
 \begin{itemize}
+    \onslide<2->{
     \item $A$: \color{Mahogany} original \color{black} term-document matrix
+    }
+    \onslide<3->{
     \item $A_k$: \color{Mahogany} rank $k$ approximation \color{black} of $A$
+    }
+    \onslide<4->{
     \item $B$: matrix after \color{Mahogany} randomly projecting \color{black} and \color{Mahogany} scaling \color{black} $A$
+    }
+    \onslide<5->{
     \item $B_{2k}$: \color{Mahogany} rank $2k$ approximation \color{black} of $A$
+    }
 \end{itemize}
 
 
@@ -543,41 +605,47 @@ $$A = \sum_{i=1}^n \sigma_i u_i v_i^T, \,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,A_k = \
 
 
 \begin{frame}{Background and Notation for the Proof}
+\onslide<1->{
 \begin{lemma} [3]
 Let $\epsilon$ be an arbitrary positive constant. If $\ell \geq c((\log n)/\epsilon^2)$ for a sufficiently large constant $c$ then, for  $p =1,...,\ell$
 \[
 \lambda_p^2 \geq \dfrac{1}{k} \left[(1-\epsilon) \sum_{i=1}^k \sigma_i^2 - \sum_{j=1}^{p-1} \lambda_j^2\right].
 \]
 \end{lemma}
+}
+\onslide<2->{
 \begin{corollary}[4]
 \label{cor:10}
 \[
 \sum_{p=1}^{2k} \lambda_p^2 \geq (1-\epsilon) \lVert A_k \rVert_F^2.
 \]
 \end{corollary}
-    
+}
 \end{frame}
 
 
 
 \begin{frame}{Background and Notation for the Proof}
+\onslide<1->{
     \begin{lemma}[5]
 \label{lem:A_Ak}
 \[
 \lVert A - A_k \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2. 
 \]
 \end{lemma} 
+}
 %\begin{proof}
 %\[
 %\lVert A - A_k \rVert_F^2 = \lVert \sum_{i=k+1}^n \sigma_i u_i v_i^T \rVert_F^2  = \sum_{i=k+1}^n \sigma_i^2 
 %\]
 %The second equality holds since the squared Frobenius norm of every matrix can be written as sum of squares of its singular values \cite{FrobeniusDef}.
 %\end{proof}
-
+\onslide<2->{
 \begin{theorem}
     [Parsevals identity \cite{hogben2013handbook}]
     Let ${b_1,...,b_n}$ be an orthonormal basis for a space $S$. Then for each $s \in S$, $|s|^2 = \sum_{i=1}^n (sb_i)^2$.
 \end{theorem}
+}
 \end{frame}
 
 
@@ -598,6 +666,7 @@ Informally, the theorem states that the original matrix $A$ after applying \colo
 
 
 \begin{frame}{Proof}
+\onslide<1->{
 \begin{tikzpicture}[overlay,remember picture]
     \node[anchor=north east,inner sep=0pt, yshift=-20pt, xshift=-20pt] at (current page.north east) {%
       \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
@@ -611,20 +680,21 @@ Hence using  \color{Mahogany} the Parseval's  \color{black} identity we can writ
 \begin{align}
    \lVert A - B_{2k} \rVert_F^2 = \sum_{i=1}^n |(A - B_{2k})b_i|^2. 
 \end{align}
- 
+}
 
 
-
+\onslide<2->{
 For $i = 1,...,2k$, because  \color{Mahogany} $b_i^T b_i = 1$  \color{black}, we have
 \begin{align}
  (A - B_{2k})b_i = Ab_i - Ab_i = 0,   
 \end{align}
-
+}
+\onslide<3->{
 and for  $i = 2k+1,...,n$, because  \color{Mahogany} $b_j^Tb_i = 0$  \color{black}, we have
 \begin{align}
 (A - B_{2k})b_i = Ab_i.
 \end{align}
-
+}
 \end{frame}
 
 \begin{frame}{Proof (continued)}
@@ -638,10 +708,16 @@ and for  $i = 2k+1,...,n$, because  \color{Mahogany} $b_j^Tb_i = 0$  \color{blac
 
 Now we continue from the equation
     \begin{align}
+    \onslide<1->{
     \lVert A - B_{2k} \rVert_F^2 &= \sum_{i=1}^n |(A - B_{2k})b_i|^2\\ 
     &= \sum_{i=2k+1}^n |A b_i|^2 \\ 
+    }
+    \onslide<2->{
     &=\sum_{i=1}^n |A b_i|^2 - \sum_{i=1}^{2k} |A b_i|^2\\ 
+    }
+    \onslide<3->{
     &\overset{\text{Parseval's id.}}{=} \lVert A \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2 
+    }
 \end{align}
 \end{frame}
 
@@ -656,8 +732,13 @@ Now we continue from the equation
   
 On the other hand, we have
 \begin{align}
+\onslide<1->{
     \lVert A - A_k \rVert_F^2 
-\overset{\text{ Lemma \ref{lem:A_Ak}}}{=}& \sum_{i=k+1}^n \sigma_i^2 \\ \overset{\text{Frob. norm \cite{FrobeniusDef}}}{=}&  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+\overset{\text{ Lemma \ref{lem:A_Ak}}}{=}& \sum_{i=k+1}^n \sigma_i^2 \\ 
+}
+\onslide<2->{
+\overset{\text{Frob. norm \cite{FrobeniusDef}}}{=}&  \lVert A \rVert_F^2 - \lVert A_k \rVert_F^2. 
+}
 \end{align}
 \end{frame}
 
@@ -668,17 +749,24 @@ On the other hand, we have
       \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
-  
+
+
 Now we consider 
 \begin{align}
+\onslide<1->{
    \lVert A - B_{2k} \rVert_F^2 - \lVert A - A_k \rVert_F^2 
    &= \color{Mahogany} \lVert A \rVert_F^2 \color{black} - \sum_{i=1}^{2k} |A b_i|^2  - (\color{Mahogany} \lVert A \rVert_F^2 \color{black} - \lVert A_k \rVert_F^2) \\
+   }
+   \onslide<2->{
    &= \lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2,
+   }
 \end{align}
+\onslide<3->{
 that is equivalent to
 \begin{equation}
    \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2)  \label{eq:A} 
 \end{equation}
+}
 \end{frame}
 
 
@@ -689,16 +777,23 @@ that is equivalent to
       \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
-
+\onslide<1->{
 For the next step, we show
 \begin{align}
 (1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
 \end{align}
 We write
+}
 \begin{align}
+    \onslide<2->{
     \sum_{i=1}^{2k} \lambda_i^2 &\overset{|Bb_i| = \lambda_i}{=}\sum_{i=1}^{2k}|Bb_i|^2 \\
+    }
+    \onslide<3->{
     &\overset{\text{sbst. B}}{=} \sum_{i=1}^{2k} \left| \sqrt{\dfrac{n}{\ell}} R^T (Ab_i)\right|^2 \\
+    }
+    \onslide<4->{
     &= \sum_{i=1}^{2k} \dfrac{n}{\ell}\left| R^T (Ab_i)\right|^2
+    }
 \end{align}
 \end{frame}
 
@@ -709,18 +804,20 @@ We write
       \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
-
-Now from the  \color{Mahogany} Johnson-Lindenstrauss lemma  \color{black} \cite{johnson1984Lindenstrauss} for very large $\ell \in \Omega((\log n)/\epsilon^2)$ we have for each $i$
+\onslide<1->{
+    Now from the  \color{Mahogany} Johnson-Lindenstrauss lemma  \color{black} \cite{johnson1984Lindenstrauss} for very large $\ell \in \Omega((\log n)/\epsilon^2)$ we have for each $i$
 \begin{align}
  \dfrac{n}{\ell}| R^T (Ab_i)|^2 \leq (1+\epsilon) |Ab_i|^2
 \end{align}
 with  \color{Mahogany} high probability \color{black}.
-\vspace{1cm}
-
+}
+\vspace{1cm}\\
+\onslide<2->{
 Hence with a high probability
 \begin{align}
 (1+\epsilon) \sum_{i=1}^{2k} |A b_i|^2 \geq \sum_{i=1}^{2k} \lambda_i^2.
 \end{align}
+}
 \end{frame}
 
 
@@ -732,14 +829,22 @@ Hence with a high probability
   \end{tikzpicture}%
     Now we have
 \begin{align}
+    \onslide<1->{
     \sum_{i=1}^{2k} |A b_i|^2 &\geq \dfrac{1}{(1+\epsilon)} \sum_{i=1}^{2k} \lambda_i^2 \\
+    }
+    \onslide<2->{
     &\overset{\text{Cor. \ref{cor:10}}}{\geq} \dfrac{(1-\epsilon)}{(1+\epsilon)} \lVert A_k \rVert_F^2 \\
+    }
+    \onslide<3->{
     &\geq (1-2\epsilon) \lVert A_k \rVert_F^2
+    }
 \end{align}
+\onslide<4->{
 I.e.
 \begin{align}
 \sum_{i=1}^{2k} |A b_i|^2 \geq (1-2\epsilon) \lVert A_k \rVert_F^2 \label{eq:22}
 \end{align}
+}
 \end{frame}
 
 
@@ -749,17 +854,23 @@ I.e.
       \includegraphics[width=20cm,height=2.5cm]{photo_2024-01-10_23-16-22.jpg}%
     };
   \end{tikzpicture}%
+\onslide<1->{
 Remember the Equation \eqref{eq:A}:
 \begin{align}
     \lVert A - B_{2k} \rVert_F^2 = \lVert A - A_k \rVert_F^2 + (\lVert A_k \rVert_F^2 - \sum_{i=1}^{2k} |A b_i|^2) \nonumber  %\label{eq:A} 
 \end{align}
     Now we   \color{Mahogany} substitute  \color{black} the result of Equation \eqref{eq:22} in equation \eqref{eq:A}:
+}
 \begin{align}
+    \onslide<2->{
     &\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + \lVert A_k \rVert_F^2 - (1-2\epsilon) \lVert A_k \rVert_F^2 \\
+    }
+    \onslide<3->{
 \iff &\lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A_k \rVert_F^2
+}
 \end{align}
 
-
+\onslide<4->{
 Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in Lemma \ref{lem:A_Ak}, %\cite{FrobeniusDef}
  we have  $\lVert A \rVert_F^2 \geq \lVert A_k \rVert_F^2$. \\
  Hence
@@ -767,6 +878,7 @@ Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in 
 \lVert A - B_{2k} \rVert_F^2 \leq \lVert A - A_k \rVert_F^2 + 2\epsilon\lVert A \rVert_F^2.
 \end{align}
 \qed
+}
 \end{frame}
 
 
@@ -778,10 +890,13 @@ Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in 
 \setbeamerfont{itemize/enumerate body}{size=\huge}
 \begingroup
 \setlength{\itemsep}{10cm}
+\onslide<1->{
     \begin{itemize}
         \item Latent semantic analysis: SVD-based technique for information retrieval
     \end{itemize}
+}
 \vspace{0.6cm}
+\onslide<2->{
 \begin{itemize}
         \item Papadimitriou et al. analysed two important aspects \cite{APAPADIMITRIOU2000217}
             \setbeamerfont{itemize/enumerate body}{size=\huge}
@@ -790,15 +905,20 @@ Due to the formulation of  \color{Mahogany} Frobenius norm  \color{black} as in 
             \item How to \color{Mahogany} reduce the computational time \color{black}? (Our main focus)
            \end{itemize}
 \end{itemize}
+}
 \vspace{0.6cm}
+\onslide<3->{
 \begin{itemize}
            \item LSI by random projection: \color{Mahogany} reduction of computational complexity\color{black}, while preventing the \color{Mahogany} expressiveness \color{black} of original matrix with high probability.
 \end{itemize}
+}
 \vspace{0.6cm}
+\onslide<4->{
 \begin{itemize}
            \item There are newer techniques based on \color{Mahogany} neural networks \color{black}\cite{GNN, HYLe17}
     \end{itemize}
 \endgroup
+}
 \end{frame}
 
 %\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
